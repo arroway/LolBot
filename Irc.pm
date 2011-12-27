@@ -3,6 +3,7 @@
 
 package Irc;
 use strict;
+use warnings;
 use IO::Socket;
 
 # Création d'un canal de connexion IRC avec le serveur $host.
@@ -21,7 +22,7 @@ sub new
 		      PeerPort => $port,
 		      Blocking => 0
 		    )
-    or die "Impossible de se connecter au serveur.\n";
+   or die "Impossible de se connecter au serveur.\n";
 
   return $this;
 }
@@ -42,9 +43,11 @@ sub recv
   my ($this) = @_;
   my $socket = $this->{SOCKET};
   my $line = <$socket>;
+  my @args = (0,0,[]);
 
-  my @args = ($line =~ m/^(\:[^ \t]+[ \t])??([0-9A-Za-z]+?[ \t])([^ \t]+?[ \t])*?(\:.+)?\r\n$/);
-
+  if ($line){
+  @args = ($line =~ m/^(\:[^ \t]+[ \t])??([0-9A-Za-z]+?[ \t])([^ \t]+?[ \t])*?(\:.+)?\r\n$/);
+  
   # Suppression de l'espace final, s'il est présent
   for (my $i=0; $i<@args; $i++)
   {
@@ -55,7 +58,7 @@ sub recv
   }
 
   print $line;
-
+  }  
   return @args;
 }
 
