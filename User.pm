@@ -58,7 +58,6 @@ sub findCapslock{
       $line =~ m/[A-Z]+?/ and
       not $line =~ m/[a-z]+?/){
     $this->{'capslock'} += 1;
-    #print $this->{'capslock'};
   }
 }
 
