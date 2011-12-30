@@ -1,3 +1,6 @@
+## Originally written by Guilhem Tiennot    ##
+## Excepting some slight committed changes  ##
+
 package Irc;
 use strict;
 use IO::Socket;
