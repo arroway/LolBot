@@ -51,6 +51,7 @@ sub recv
   # Suppression de l'espace final, s'il est présent
   for (my $i=0; $i<@args; $i++)
   {
+    #XXX: Use of uninitialized value $args[..] in pattern match (m//)
     if ($args[$i] =~ m/.*[ \t]$/)
     {
       $args[$i] =~ s/.$//;
