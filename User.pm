@@ -5,8 +5,9 @@ use warnings;
 
 sub new{
 
-  my ($class) = @_;
+  my ($class, $name) = @_;
   my ($this) = {
+    'name'          => $name,
     'capslock'      => 0,
     'exclamative'   => 0,
     'interrogative' => 0
@@ -17,12 +18,19 @@ sub new{
   return $this;
 }
 
-sub resetAll{
+sub resetAllCounters{
   my ($this) = @_;
   if (ref($this)){
     $this->{'capslock'} = 0;
     $this->{'exclamative'} = 0;
     $this->{'interrogative'} = 0;
+  }
+}
+
+sub getName{
+  my ($this) = @_;
+  if (ref($this)){
+    return $this->{'name'};
   }
 }
 
