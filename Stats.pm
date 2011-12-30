@@ -1,4 +1,5 @@
 package Stats;
+use User;
 use strict; 
 use warnings;
 use POSIX qw(strftime);
@@ -30,8 +31,12 @@ sub getLogLines{
 
 sub getNickList{
   my ($this) = @_;
+  my $string = "";
   if (ref($this)){
-    return $this->{'nickList'};
+    foreach my $nickey (@{$this->{"nickList"}}){
+       $string .="$nickey->{'name'} ";
+    }
+    return $string;
   }
 }
 
@@ -84,14 +89,15 @@ sub addNick{
       $present = TRUE;
     }
   }
-  push((@{$this->{'nickList'}}),$newNick) if ($present == FALSE);
+  my $newNickObject = User->new($newNick);
+  push((@{$this->{'nickList'}}), $newNickObject) if ($present == FALSE);
 }
 
-sub printNicklist{
+sub printNickList{
  
   my ($this) = @_;  
   foreach my $nickey (@{$this->{"nickList"}}){
-    print "$nickey \n";
+    print "$nickey->{'name'} \n";
   }  
 } 
 
