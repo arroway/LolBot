@@ -73,11 +73,19 @@ sub log(){
 }
 
 sub listNick(){
-  
+ 
   my ($this,@nicks) = @_;
+  my $newNick = "";
+
   foreach my $key (@nicks){
-    my ($newNick) = $key;
-    $this->addNick($newNick);
+    
+    while ($key){
+      if ($key =~ m/(\w+)/){
+        $newNick = $1;
+        $key = $';
+        $this->addNick($newNick);
+      }
+    }
   }
 }
 

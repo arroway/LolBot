@@ -13,27 +13,6 @@ my $chan = "#pourlesbots";
 my $server = Irc->new($host,$port); #Connect the bot to the server
 my $stats = Stats->new();           #Start a new stats web page
 
-sub recInitNickList{
-  
-  my ($foo, @nicklist) = @_;
-  $stats->listNick(@nicklist); 
-  $stats->printNickList();
-}
-      
-sub newJoin{
-
-  my $prefix = @_;
-  my $userNick = ($prefix =~ m/:(.*)@/);
-  $stats->addNick($userNick);
-  $stats->printNickList();
-}
-
-sub changeNick{
-
-  my $userNick = @_;
-  $stats->addNick($userNick);
-  $stats->printNickList();
-}
 
 while(1){
 
@@ -44,9 +23,9 @@ while(1){
        $server->send("NICK", ($nick));
 	     $server->send("USER", ($nick, $nick, $host, ":$nick"));
     }
-
+    
     $server->send("JOIN", ($chan)) if ($cmd eq "376");
-
+    
     #Answer to the ping of the server to stay connected
     $server->send("PONG", ($args[@args-1])) if ($cmd eq "PING");
     
@@ -65,6 +44,28 @@ while(1){
     #}
     $stats->log($cmd);
   }
+}
+
+sub recInitNickList{
+  
+  my ($foo, @nicklist) = @_;
+  $stats->listNick($nicklist[0]); 
+  $stats->printNickList();
+}
+      
+sub newJoin{
+
+  my $prefix = @_;
+  my $userNick = ($prefix =~ m/:(.*)@/);
+  $stats->addNick($userNick);
+  $stats->printNickList();
+}
+
+sub changeNick{
+
+  my $userNick = @_;
+  $stats->addNick($userNick);
+  $stats->printNickList();
 }
 
 exit 0;

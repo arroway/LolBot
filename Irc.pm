@@ -46,7 +46,7 @@ sub recv
   my @args = (0,0,[]);
 
   if ($line){
-  @args = ($line =~ m/^(\:[^ \t]+[ \t])??([0-9A-Za-z]+?[ \t])([^ \t]+?[ \t])*?(\:.+)?\r\n$/);
+   @args = ($line =~ m/^(\:[^ \t]+[ \t])??([0-9A-Za-z]+?[ \t])([^ \t]+?[ \t])*?(\:.+)?\r\n$/);
   
   # Suppression de l'espace final, s'il est présent
   for (my $i=0; $i<@args; $i++)
