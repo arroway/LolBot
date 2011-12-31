@@ -190,7 +190,7 @@ sub run{
   #XXX: counter incremented of only 1
   $line = "LoL LOL lol";
   $user->findLol($line);
-  $t->test("LoL LOL lol: getLol", $user->getLol(), 1);
+  $t->test("LoL LOL lol: getLol", $user->getLol(), 3);
   $user->resetAllCounters();
 
   ##36

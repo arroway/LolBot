@@ -23,7 +23,7 @@ while(1){
        $server->send("NICK", ($nick));
 	     $server->send("USER", ($nick, $nick, $host, ":$nick"));
     }
-    
+
     $server->send("JOIN", ($chan)) if ($cmd eq "376");
     
     #Answer to the ping of the server to stay connected
@@ -34,14 +34,18 @@ while(1){
     newJoin($prefix) if ($cmd eq "JOIN");
     changeNick($args[1]) if ($cmd eq "NICK");
 
-    #Increment the stats variables for the user that just wrote
-    #if ($cmd eq "PRIVMSG"){
 
-      #if ($args[@args-1] =~ m/ (bonjour|salut) $nick/i){
-      #$userNick = 
-      #incr logLines
-      #...
-    #}
+    if ($cmd eq "PRIVMSG"){
+      
+      my ($chan, $msg) = @args;
+      my $userNick = "";
+      if ($prefix =~ m/:(\w+)!/){
+        $userNick = $1;
+      }
+
+      recLol($userNick,$msg);
+    }
+
     $stats->log($cmd);
   }
 }
@@ -66,6 +70,19 @@ sub changeNick{
   my $userNick = @_;
   $stats->addNick($userNick);
   $stats->printNickList();
+}
+
+sub recLol{
+  
+  my ($userNick,$msg) = @_;
+  my @nickList = (@{$stats->{'nickList'}}); 
+  for (my $i=0; $i< @nickList; $i++){
+     if ($userNick eq $nickList[$i]->{'name'}){
+       $nickList[$i]->findLol($msg);
+       my $lolCount = $nickList[$i]->getLol();
+       print "$userNick getLol: $lolCount \n";
+     }
+   }
 }
 
 exit 0;

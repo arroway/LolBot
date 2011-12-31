@@ -61,6 +61,7 @@ sub getInterrogative{
 sub getLol{
   my ($this) = @_;
   if (ref($this)){
+    print "$this->{'lol'}\n";
     return $this->{'lol'};
   }
 }
@@ -98,9 +99,12 @@ sub findInterrogative{
 
 sub findLol{
   
-  my ($this,$line) = @_;
-  if ($line =~ m/(lol)+/i){
+  my ($this,$msg) = @_;
+  print "findlol line: $msg\n";
+  if ($msg =~ m/(lol)+/i){
     $this->{'lol'} += 1;
+    print "in findlol: $this->{'lol'}\n";
+
   }
 }
 
