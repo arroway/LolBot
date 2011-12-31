@@ -10,7 +10,8 @@ sub new{
     'name'          => $name,
     'capslock'      => 0,
     'exclamative'   => 0,
-    'interrogative' => 0
+    'interrogative' => 0,
+    'lol'           => 0
     #...
   };
 
@@ -24,6 +25,7 @@ sub resetAllCounters{
     $this->{'capslock'} = 0;
     $this->{'exclamative'} = 0;
     $this->{'interrogative'} = 0;
+    $this->{'lol'} = 0;
   }
 }
 
@@ -53,6 +55,13 @@ sub getInterrogative{
   my ($this) = @_;
   if (ref($this)){
     return $this->{'interrogative'};
+  }
+}
+
+sub getLol{
+  my ($this) = @_;
+  if (ref($this)){
+    return $this->{'lol'};
   }
 }
 
@@ -87,5 +96,12 @@ sub findInterrogative{
   }  
 }
 
+sub findLol{
+  
+  my ($this,$line) = @_;
+  if ($line =~ m/(lol)+/i){
+    $this->{'lol'} += 1;
+  }
+}
 
 1;

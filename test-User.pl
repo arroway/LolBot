@@ -5,7 +5,7 @@ use warnings;
 use User;
 use MyTests;
 
-my $nbTests = 25;
+my $nbTests = 36;
 
 my $nameUser = "arroway"; 
 my $user = User->new($nameUser);
@@ -17,7 +17,8 @@ $t->test("getName", $user->getName(), $nameUser);
 $t->test("getCapslock", $user->getCapslock(), 0);
 $t->test("getExclamative", $user->getExclamative(), 0);
 $t->test("getInterrogative", $user->getInterrogative(), 0);
-##4
+$t->test("getLol", $user->getLol(), 0);
+##5
 
 print "\n***** With an empty line:\n";
 
@@ -28,7 +29,9 @@ $user->findExclamative($line);
 $t->test("getExclamative", $user->getExclamative(), 0);
 $user->findInterrogative($line);
 $t->test("getInterrogative", $user->getInterrogative(), 0);
-##7
+$user->findLol($line);
+$t->test("getLol", $user->getLol(), 0);
+##9
 
 print "\n***** Note: After each test, the attribute counters are reset.\n";
 print   "      We assume the resetAllCounters() function does work.\n";
@@ -42,8 +45,10 @@ $user->findExclamative($line);
 $t->test("getExclamative", $user->getExclamative(), 0);
 $user->findInterrogative($line);
 $t->test("getInterrogative", $user->getInterrogative(), 0);
+$user->findLol($line);
+$t->test("getLol", $user->getLol(), 0);
 $user->resetAllCounters();
-##10
+##13
 
 
 print "\n***** With a single-character string \"!\":\n";
@@ -56,7 +61,9 @@ $t->test("getExclamative", $user->getExclamative(), 1);
 $user->findInterrogative($line);
 $t->test("getInterrogative", $user->getInterrogative(), 0);
 $user->resetAllCounters();
-##13
+$user->findLol($line);
+$t->test("getLol", $user->getLol(), 0);
+##17
 
 
 print "\n***** With a single-character string \"?\":\n";
@@ -69,7 +76,9 @@ $t->test("getExclamative", $user->getExclamative(), 0);
 $user->findInterrogative($line);
 $t->test("getInterrogative", $user->getInterrogative(), 1);
 $user->resetAllCounters();
-##16
+$user->findLol($line);
+$t->test("getLol", $user->getLol(), 0);
+##21
 
 
 print "\n***** With multiple matches: ABCV ! ahvhdf ?\n";
@@ -81,8 +90,10 @@ $user->findExclamative($line);
 $t->test("getExclamative", $user->getExclamative(), 1);
 $user->findInterrogative($line);
 $t->test("getInterrogative", $user->getInterrogative(), 1);
+$user->findLol($line);
+$t->test("getLol", $user->getLol(), 0);
 $user->resetAllCounters();
-##19
+##25
 
 
 #XXX= this one should fail (consider improve the relative regex)
@@ -92,7 +103,7 @@ $line = "Alsjdedjf";
 $user->findCapslock($line);
 $t->test("getCapslock", $user->getCapslock(), 0);
 $user->resetAllCounters();
-##20
+##26
 
 print "\n***** With multiple matches: ABCDEFG ZKGVZKHV.\n";
 
@@ -100,7 +111,7 @@ $line = "ABCDEFG ZKGVZKHV";
 $user->findCapslock($line);
 $t->test("getCapslock", $user->getCapslock(), 1);
 $user->resetAllCounters();
-#21
+#27
 
 print "\n***** With numbers: 1234.\n";
 
@@ -108,7 +119,7 @@ $line = "1234";
 $user->findCapslock($line);
 $t->test("getCapslock", $user->getCapslock(), 0);
 $user->resetAllCounters();
-#22
+#28
 
 
 print "\n***** With numbers and letters: 1234 AH AH AH.\n";
@@ -117,7 +128,7 @@ $line = "1234 AH AH AH";
 $user->findCapslock($line);
 $t->test("getCapslock", $user->getCapslock(), 1);
 $user->resetAllCounters();
-#23
+#29
 
 
 print "\n***** With letters and numbers: AH AH AH A 1234.\n";
@@ -126,7 +137,7 @@ $line = "AH AH AH A 1234";
 $user->findCapslock($line);
 $t->test("getCapslock", $user->getCapslock(), 1);
 $user->resetAllCounters();
-#24
+#30
 
 
 print "\n***** With ponctuation: HE !.\n";
@@ -135,7 +146,41 @@ $line = "HE !";
 $user->findCapslock($line);
 $t->test("getCapslock", $user->getCapslock(), 1);
 $user->resetAllCounters();
-#25
+#31
+
+
+print "\n***** Find lol in various strings and ways:\n";
+
+$line = "lol";
+$user->findLol($line);
+$t->test("lol: getLol", $user->getLol(), 1);
+$user->resetAllCounters();
+
+$line = "LOL";
+$user->findLol($line);
+$t->test("LOL: getLol", $user->getLol(), 1);
+$user->resetAllCounters();
+
+$line = "LoL";
+$user->findLol($line);
+$t->test("LoL: getLol", $user->getLol(), 1);
+$user->resetAllCounters();
+
+$line = "this is a lolcat";
+$user->findLol($line);
+$t->test("This is a lolcat: getLol", $user->getLol(), 1);
+$user->resetAllCounters();
+
+#XXX: counter incremented of only 1
+$line = "LoL LOL lol";
+$user->findLol($line);
+$t->test("LoL LOL lol: getLol", $user->getLol(), 1);
+$user->resetAllCounters();
+
+##36
+
+
+
 
 
 print "\n--->\t";
