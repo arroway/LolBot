@@ -99,7 +99,7 @@ sub printNickList{
   foreach my $nickey (@{$this->{"nickList"}}){
     print "$nickey->{'name'} \n";
   }  
-} 
+}
 
 sub getCurrentNick{
 }

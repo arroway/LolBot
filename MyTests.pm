@@ -6,10 +6,12 @@ use warnings;
 
 sub new{
 
-  my ($class,$total) = @_;
+  my ($class,$name,$total) = @_;
   my ($this) = {
+    'name'   => $name,
     'countT' => 0,
-    'totalT' => $total
+    'totalT' => $total,
+    'result' => ""
   };
 
   bless($this, $class);
@@ -35,10 +37,12 @@ sub myTestsDone{
   my $diff = $this->{'totalT'} - $this->{'countT'};
 
   if ($diff == 0){
-    print "All tests passed.\n";
+    $this->{'result'} = "All tests passed for $this->{'name'}.\n";
+    return $this->{'result'};
   }
   else{
-    print "$diff tests failed :( \n";
+    $this->{'result'} = "$diff tests failed for $this->{'name'}.\n";
+    return $this->{'result'};
   }
 }
 
