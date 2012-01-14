@@ -25,7 +25,7 @@ while(1){
     }
 
     $server->send("JOIN", ($chan)) if ($cmd eq "376");
-    
+    i
     #Answer to the ping of the server to stay connected
     $server->send("PONG", ($args[@args-1])) if ($cmd eq "PING");
     
@@ -59,15 +59,23 @@ sub recInitNickList{
       
 sub newJoin{
 
-  my $prefix = @_;
-  my $userNick = ($prefix =~ m/:(.*)@/);
+  my ($prefix) = @_;
+  my $userNick = "";
+  print "prefix: $prefix";
+  if ($prefix =~ m/:(.*)!/){
+    $userNick = $1;
+  }
+  print "in newJoin: $userNick";
   $stats->addNick($userNick);
   $stats->printNickList();
 }
 
 sub changeNick{
 
-  my $userNick = @_;
+  my ($userNick) = @_;
+  if($userNick =~ m/:(.*)/){
+    $userNick = $1;
+  }
   $stats->addNick($userNick);
   $stats->printNickList();
 }
