@@ -20,7 +20,7 @@ sub new{
 sub run{
 
   my ($this) = @_;
-  my $nbTests = 13;
+  my $nbTests = 14;
   my $stats = Stats->new();
 
 
@@ -61,6 +61,12 @@ sub run{
   $t->test("listNick with several values: getNickList", $stats->getNickList(), "arroway arroway_ lolbot you ");
   ##8
 
+  print "\n*****The nickname is already registered.\n";
+  
+  my @nicks = "arroway";
+  $stats->listNick(@nicks);
+  $t->test("arroway already there: getNickList", $stats->getNickList(), "arroway arroway_ lolbot you ");
+  ##9
 
   print "\n***** How many lines are logged ?\n";
 
@@ -82,7 +88,7 @@ sub run{
         $t->test("getLogLines", $stats->getLogLines(), $count-1);
       }
   }
-  ##13
+  ##14
 
   print "\n--->\t";
   $this->{'result'} = $t->myTestsDone();

@@ -61,11 +61,9 @@ sub newJoin{
 
   my ($prefix) = @_;
   my $userNick = "";
-  print "prefix: $prefix";
   if ($prefix =~ m/:(.*)!/){
     $userNick = $1;
   }
-  print "in newJoin: $userNick";
   $stats->addNick($userNick);
   $stats->printNickList();
 }

@@ -89,12 +89,12 @@ sub listNick(){
   }
 }
 
-sub addNick{
-  my ($this,$newNick) = @_;
-  my $present = FALSE;
-  for my $i (@{$this->{'nickList'}}){
-    if ($i eq $newNick){
-      $present = TRUE;
+  sub addNick{
+    my ($this,$newNick) = @_;
+    my $present = FALSE;
+    for my $nick (@{$this->{'nickList'}}){
+      if ($nick->{'name'} eq $newNick){
+        $present = TRUE;
     }
   }
   my $newNickObject = User->new($newNick);
