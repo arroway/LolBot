@@ -25,7 +25,7 @@ while(1){
     }
 
     $server->send("JOIN", ($chan)) if ($cmd eq "376");
-    i
+    
     #Answer to the ping of the server to stay connected
     $server->send("PONG", ($args[@args-1])) if ($cmd eq "PING");
     
