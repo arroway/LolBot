@@ -109,6 +109,47 @@ sub printNickList{
   }  
 }
 
+sub recInitNickList{
+  
+  my ($foo, @nicklist) = @_;
+  $stats->listNick($nicklist[0]); 
+  $stats->printNickList();
+}
+      
+sub newJoin{
+
+  my ($prefix) = @_;
+  my $userNick = "";
+  if ($prefix =~ m/:(.*)!/){
+    $userNick = $1;
+  }
+  $stats->addNick($userNick);
+  $stats->printNickList();
+}
+
+sub changeNick{
+
+  my ($userNick) = @_;
+  if($userNick =~ m/:(.*)/){
+    $userNick = $1;
+  }
+  $stats->addNick($userNick);
+  $stats->printNickList();
+}
+
+sub recLol{
+  
+  my ($userNick,$msg) = @_;
+  my @nickList = (@{$stats->{'nickList'}}); 
+  for (my $i=0; $i< @nickList; $i++){
+     if ($userNick eq $nickList[$i]->{'name'}){
+       $nickList[$i]->findLol($msg);
+       my $lolCount = $nickList[$i]->getLol();
+       print "$userNick getLol: $lolCount \n";
+     }
+   }
+}
+
 sub getCurrentNick{
 }
 
