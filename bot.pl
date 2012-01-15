@@ -30,9 +30,9 @@ while(1){
     $server->send("PONG", ($args[@args-1])) if ($cmd eq "PING");
     
     #Deal with new nicknames   
-    recInitNickList(@args) if ($cmd eq "353");
-    newJoin($prefix) if ($cmd eq "JOIN");
-    changeNick($args[1]) if ($cmd eq "NICK");
+    $stats->recInitNickList(@args) if ($cmd eq "353");
+    $stats->newJoin($prefix) if ($cmd eq "JOIN");
+    $stats->changeNick($args[1]) if ($cmd eq "NICK");
 
 
     if ($cmd eq "PRIVMSG"){
@@ -43,7 +43,7 @@ while(1){
         $userNick = $1;
       }
 
-      recLol($userNick,$msg);
+      $stats->recLol($userNick,$msg);
     }
 
     $stats->log($cmd);
