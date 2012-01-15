@@ -72,6 +72,18 @@ sub log(){
   }
 }
 
+  sub addNick{
+    my ($this,$newNick) = @_;
+    my $present = FALSE;
+    for my $nick (@{$this->{'nickList'}}){
+      if ($nick->{'name'} eq $newNick){
+        $present = TRUE;
+    }
+  }
+  my $newNickObject = User->new($newNick);
+  push((@{$this->{'nickList'}}), $newNickObject) if ($present == FALSE);
+}
+
 sub listNick(){
  
   my ($this,@nicks) = @_;
@@ -89,18 +101,6 @@ sub listNick(){
   }
 }
 
-  sub addNick{
-    my ($this,$newNick) = @_;
-    my $present = FALSE;
-    for my $nick (@{$this->{'nickList'}}){
-      if ($nick->{'name'} eq $newNick){
-        $present = TRUE;
-    }
-  }
-  my $newNickObject = User->new($newNick);
-  push((@{$this->{'nickList'}}), $newNickObject) if ($present == FALSE);
-}
-
 sub printNickList{
  
   my ($this) = @_;  
@@ -109,13 +109,13 @@ sub printNickList{
   }  
 }
 
-sub recInitNickList{
+sub InitNickList{
   
   my ($foo, @nicklist) = @_;
   $stats->listNick($nicklist[0]); 
   $stats->printNickList();
 }
-      
+
 sub newJoin{
 
   my ($prefix) = @_;

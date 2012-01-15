@@ -30,7 +30,7 @@ while(1){
     $server->send("PONG", ($args[@args-1])) if ($cmd eq "PING");
     
     #Deal with new nicknames   
-    $stats->recInitNickList(@args) if ($cmd eq "353");
+    $stats->InitNickList(@args) if ($cmd eq "353");
     $stats->newJoin($prefix) if ($cmd eq "JOIN");
     $stats->changeNick($args[1]) if ($cmd eq "NICK");
 
