@@ -1,0 +1,11 @@
+Changes
+Makefile.PL
+MANIFEST
+README
+t/App::LolBot.t
+lib/App/LolBot.pm
+lib/App/LolBot/Bot.pm
+lib/App/LolBot/Irc.pm
+lib/App/LolBot/Stats.pm
+lib/App/LolBot/User.pm
+

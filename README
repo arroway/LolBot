@@ -1,0 +1,35 @@
+App::LolBot version 0.01
+=======================
+
+This module provides some features to run an IRC bot. 
+At the moment, it does not much more than connecting itself on a IRC chan, memorizing who's there or who joins 
+and (killer feature) counting how many "lol" are said on the chan (by each user).
+
+Features to come: more elaborate stats and a web interface 
+
+
+INSTALLATION
+
+To install this module type the following:
+
+   perl Makefile.PL
+   make
+   make test    # does nothing, I'll re-implement the tests
+   make install
+
+DEPENDENCIES
+
+This module requires these other modules and libraries:
+
+  #no dependencies at the moment
+
+COPYRIGHT AND LICENCE
+
+
+Copyright (C) 2012 by Stéphani Ouillon
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself, either Perl version 5.12.3 or,
+at your option, any later version of Perl 5 you may have available.
+
+

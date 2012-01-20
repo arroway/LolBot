@@ -1,5 +1,5 @@
-package Stats;
-use User;
+package App::LolBot::Stats;
+use App::LolBot::User;
 use strict; 
 use warnings;
 use POSIX qw(strftime);
@@ -80,7 +80,7 @@ sub log(){
         $present = TRUE;
     }
   }
-  my $newNickObject = User->new($newNick);
+  my $newNickObject = App::LolBot::User->new($newNick);
   push((@{$this->{'nickList'}}), $newNickObject) if ($present == FALSE);
 }
 
@@ -111,36 +111,36 @@ sub printNickList{
 
 sub InitNickList{
   
-  my ($foo, @nicklist) = @_;
-  $stats->listNick($nicklist[0]); 
-  $stats->printNickList();
+  my ($this, $foo, @nicklist) = @_;
+  $this->listNick($nicklist[0]); 
+  $this->printNickList();
 }
 
 sub newJoin{
 
-  my ($prefix) = @_;
+  my ($this,$prefix) = @_;
   my $userNick = "";
   if ($prefix =~ m/:(.*)!/){
     $userNick = $1;
   }
-  $stats->addNick($userNick);
-  $stats->printNickList();
+  $this->addNick($userNick);
+  $this->printNickList();
 }
 
 sub changeNick{
 
-  my ($userNick) = @_;
+  my ($this,$userNick) = @_;
   if($userNick =~ m/:(.*)/){
     $userNick = $1;
   }
-  $stats->addNick($userNick);
-  $stats->printNickList();
+  $this->addNick($userNick);
+  $this->printNickList();
 }
 
 sub recLol{
   
-  my ($userNick,$msg) = @_;
-  my @nickList = (@{$stats->{'nickList'}}); 
+  my ($this,$userNick,$msg) = @_;
+  my @nickList = (@{$this->{'nickList'}}); 
   for (my $i=0; $i< @nickList; $i++){
      if ($userNick eq $nickList[$i]->{'name'}){
        $nickList[$i]->findLol($msg);

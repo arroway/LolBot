@@ -1,7 +1,7 @@
 ## Originally written by Guilhem Tiennot    ##
 ## Excepting some slight committed changes  ##
 
-package Irc;
+package App::LolBot::Irc;
 use strict;
 use warnings;
 use IO::Socket;

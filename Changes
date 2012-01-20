@@ -1,0 +1,6 @@
+Revision history for Perl extension App::LolBot.
+
+0.01  Fri Jan 20 12:32:51 2012
+	- original version; created by h2xs 1.23 with options
+		-XAn App::LolBot
+

@@ -1,4 +1,4 @@
-package User;
+package App::LolBot::User;
 use strict;
 use warnings;
 
