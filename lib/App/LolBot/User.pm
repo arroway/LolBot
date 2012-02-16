@@ -1,12 +1,14 @@
 package App::LolBot::User;
+
+use App::LolBot::Database;
 use strict;
 use warnings;
-
 
 sub new{
 
   my ($class, $name) = @_;
   my ($this) = {
+    'db'            => App::LolBot::Database->connect("dbi:SQLite::data.db", {AutoCommit => 1, RaiseError => 0}),
     'name'          => $name,
     'capslock'      => 0,
     'exclamative'   => 0,
@@ -16,6 +18,7 @@ sub new{
   };
 
   bless($this,$class);
+
   return $this;
 }
 
@@ -27,6 +30,16 @@ sub resetAllCounters{
     $this->{'interrogative'} = 0;
     $this->{'lol'} = 0;
   }
+}
+
+sub loadData{
+  my ($this) = @_;
+  App::LolBot::Database->do("INSERT INTO nicknames (name, capslock, exclamative, interrogative, lol) VALUES ('$this->{'name'}', 
+    $this->{'capslock'}, 
+    $this->{'exclamative'}, 
+    $this->{'interrogative'}, 
+    $this->{'lol'})");
+  App::LolBot::Database->commit();
 }
 
 sub getName{

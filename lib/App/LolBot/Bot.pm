@@ -5,7 +5,6 @@ use warnings;
 use App::LolBot::Irc;
 use App::LolBot::Stats;
 
-
 sub new {
   
   my ($class) = @_;
@@ -13,7 +12,7 @@ sub new {
     'host'  =>  "irc.minet.net",
     'port'  =>  6667,
     'nick'  =>  "LolBot",
-    'chan'  =>  "#pourlesbots",
+    'chan'  =>  "#pourlesbots"
 };
 
   bless($this, $class);
@@ -64,6 +63,7 @@ sub run {
       }
 
       $stats->log($cmd);
+      $stats->loadData();
     }
   }
 }

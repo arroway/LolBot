@@ -1,5 +1,8 @@
 package App::LolBot::Stats;
+
 use App::LolBot::User;
+use App::LolBot::Database;
+use DBI;
 use strict; 
 use warnings;
 use POSIX qw(strftime);
@@ -11,6 +14,7 @@ sub new{
  
   my ($class) = @_;
   my ($this) = {
+    'db'        => App::LolBot::Database->connect("dbi:SQLite::data.db"), 
     'logLines'  => 0,
     'nickList'  => [],
     'date'      => strftime("%Y-%m-%d", localtime()),
@@ -20,6 +24,13 @@ sub new{
 
   bless($this, $class);
   return $this;
+}
+
+sub loadData{
+  my ($this) = @_;
+  foreach my $nickey (@{$this->{"nickList"}}){
+    $nickey->loadData();
+  }  
 }
 
 sub getLogLines{
@@ -72,16 +83,24 @@ sub log(){
   }
 }
 
-  sub addNick{
-    my ($this,$newNick) = @_;
-    my $present = FALSE;
-    for my $nick (@{$this->{'nickList'}}){
-      if ($nick->{'name'} eq $newNick){
-        $present = TRUE;
+sub addNick{
+  my ($this,$newNick) = @_;
+  my $present = FALSE;
+  for my $nick (@{$this->{'nickList'}}){
+    if ($nick->{'name'} eq $newNick){
+      $present = TRUE;     
     }
   }
   my $newNickObject = App::LolBot::User->new($newNick);
-  push((@{$this->{'nickList'}}), $newNickObject) if ($present == FALSE);
+
+  if ($present == FALSE){
+  
+    push((@{$this->{'nickList'}}), $newNickObject);
+    
+    #we call class methods
+    #App::LolBot::Database->do("INSERT INTO nicknames (name) VALUES ('$newNick')");
+    #App::LolBot::Database->commit();
+  }
 }
 
 sub listNick(){
