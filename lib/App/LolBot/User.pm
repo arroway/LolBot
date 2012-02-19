@@ -114,10 +114,8 @@ sub findLol{
   
   my ($this,$msg) = @_;
   print "findlol line: $msg\n";
-  if ($msg =~ m/(lol)+/i){
+  while ($msg =~ m/lol/g){
     $this->{'lol'} += 1;
-    print "in findlol: $this->{'lol'}\n";
-
   }
 }
 
