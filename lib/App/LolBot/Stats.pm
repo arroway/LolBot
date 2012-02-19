@@ -14,7 +14,7 @@ sub new{
  
   my ($class) = @_;
   my ($this) = {
-    'db'        => App::LolBot::Database->connect("dbi:SQLite::data.db"), 
+    'db'        => App::LolBot::Database->connect(),
     'logLines'  => 0,
     'nickList'  => [],
     'date'      => strftime("%Y-%m-%d", localtime()),
@@ -83,6 +83,20 @@ sub log(){
   }
 }
 
+sub logUser(){
+  
+  my ($this,$userNick) = @_;
+  my @nickList = (@{$this->{'nickList'}}); 
+  
+  for (my $i=0; $i < @nickList; $i++){
+     if ($userNick eq $nickList[$i]->{'name'}){
+       $nickList[$i]->logUser();
+       print "logUser: " . $userNick;
+       $nickList[$i]->getLog();
+     }
+   }
+}
+
 sub addNick{
   my ($this,$newNick) = @_;
   my $present = FALSE;
@@ -94,12 +108,8 @@ sub addNick{
   my $newNickObject = App::LolBot::User->new($newNick);
 
   if ($present == FALSE){
-  
     push((@{$this->{'nickList'}}), $newNickObject);
-    
-    #we call class methods
-    #App::LolBot::Database->do("INSERT INTO nicknames (name) VALUES ('$newNick')");
-    #App::LolBot::Database->commit();
+    App::LolBot::Database->insert($newNick);
   }
 }
 
@@ -156,15 +166,18 @@ sub changeNick{
   $this->printNickList();
 }
 
-sub recLol{
+sub recStats{
   
   my ($this,$userNick,$msg) = @_;
   my @nickList = (@{$this->{'nickList'}}); 
-  for (my $i=0; $i< @nickList; $i++){
-     if ($userNick eq $nickList[$i]->{'name'}){
-       $nickList[$i]->findLol($msg);
-       my $lolCount = $nickList[$i]->getLol();
-       print "$userNick getLol: $lolCount \n";
+  
+  for (my $i=0; $i< @nickList; $i++){  
+    if ($userNick eq $nickList[$i]->{'name'}){
+ 
+      $nickList[$i]->findLol($msg);
+      $nickList[$i]->findExclamative($msg);
+      $nickList[$i]->findInterrogative($msg);
+      $nickList[$i]->findCapslock($msg);
      }
    }
 }

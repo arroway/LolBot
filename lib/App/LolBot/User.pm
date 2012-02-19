@@ -8,12 +8,13 @@ sub new{
 
   my ($class, $name) = @_;
   my ($this) = {
-    'db'            => App::LolBot::Database->connect("dbi:SQLite::data.db", {AutoCommit => 1, RaiseError => 0}),
+    'db'            => App::LolBot::Database->connect(),
     'name'          => $name,
     'capslock'      => 0,
     'exclamative'   => 0,
     'interrogative' => 0,
-    'lol'           => 0
+    'lol'           => 0,
+    'log'           => 0
     #...
   };
 
@@ -29,18 +30,20 @@ sub resetAllCounters{
     $this->{'exclamative'} = 0;
     $this->{'interrogative'} = 0;
     $this->{'lol'} = 0;
+    $this->{'log'} = 0;
   }
 }
 
-sub loadData{
-  my ($this) = @_;
-  App::LolBot::Database->do("INSERT INTO nicknames (name, capslock, exclamative, interrogative, lol) VALUES ('$this->{'name'}', 
-    $this->{'capslock'}, 
-    $this->{'exclamative'}, 
-    $this->{'interrogative'}, 
-    $this->{'lol'})");
-  App::LolBot::Database->commit();
-}
+#sub loadData{
+#  my ($this) = @_;
+#  App::LolBot::Database->do("INSERT INTO nicknames (name, capslock, exclamative, interrogative, lol, log) VALUES ('$this->{'name'}', 
+#    $this->{'capslock'}, 
+#    $this->{'exclamative'}, 
+#    $this->{'interrogative'}, 
+#    $this->{'lol'},
+#    $this->{'log'})");
+  #App::LolBot::Database->commit();
+#}
 
 sub getName{
   my ($this) = @_;
@@ -79,6 +82,15 @@ sub getLol{
   }
 }
 
+sub getLog{
+  my ($this) = @_;
+  if (ref($this)){
+    print "$this->{'log'}\n";
+    return $this->{'log'};
+  }
+}
+
+
 sub findCapslock{
   
   #in argument: what has just said the user
@@ -89,6 +101,7 @@ sub findCapslock{
       $line =~ m/[A-Z]+?/ and
       not $line =~ m/[a-z]+?/){
     $this->{'capslock'} += 1;
+    App::LolBot::Database->update($this->{'name'}, "capslock", $this->{'capslock'});
   }
 }
 
@@ -98,6 +111,7 @@ sub findExclamative{
   #XXX
   if ($line =~ m/[\!]/ ){
     $this->{'exclamative'} += 1;
+    App::LolBot::Database->update($this->{'name'}, "exclamative", $this->{'exclamative'});
   }  
 }
 
@@ -107,6 +121,7 @@ sub findInterrogative{
   #XXX
   if ($line =~ m/[\?]/ ){
     $this->{'interrogative'} += 1;
+    App::LolBot::Database->update($this->{'name'}, "interrogative", $this->{'interrogative'});
   }  
 }
 
@@ -116,7 +131,15 @@ sub findLol{
   print "findlol line: $msg\n";
   while ($msg =~ m/lol/g){
     $this->{'lol'} += 1;
+    App::LolBot::Database->update($this->{'name'}, "lol", $this->{'lol'});
   }
+}
+
+sub logUser{
+  my ($this) = @_;
+  $this->{'log'} += 1;
+  App::LolBot::Database->update($this->{'name'}, "log", $this->{'log'});
+ 
 }
 
 1;

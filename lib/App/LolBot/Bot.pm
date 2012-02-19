@@ -59,12 +59,13 @@ sub run {
           $userNick = $1;
         }
 
-        $stats->recLol($userNick,$msg);
+        $stats->logUser($userNick);
+        $stats->recStats($userNick,$msg);
+        
       }
 
       $stats->log($cmd);
-      $stats->loadData();
-    }
+    }  
   }
 }
 
