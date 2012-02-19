@@ -60,10 +60,11 @@ sub run {
         }
 
         $stats->recLol($userNick,$msg);
+        $stats->loadData();
+        
       }
 
       $stats->log($cmd);
-      $stats->loadData();
     }
   }
 }
