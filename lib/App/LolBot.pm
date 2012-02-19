@@ -37,49 +37,38 @@ our $VERSION = '0.01';
 
 1;
 __END__
-# Below is stub documentation for your module. You'd better edit it!
 
 =head1 NAME
 
-App::LolBot - Perl extension for blah blah blah
+LolBot
 
 =head1 SYNOPSIS
 
-  use App::LolBot;
-  blah blah blah
+  App::LolBot is a Perl extension to run an IRC bot and do some parsing stuff to get statistics about IRC users of the chan.
 
 =head1 DESCRIPTION
 
-Stub documentation for App::LolBot, created by h2xs. It looks like the
-author of the extension was negligent enough to leave the stub
-unedited.
+The bot connects on a given IRC chan and collect information from the discussion. The data are stored in a sqlite database. 
 
-Blah blah blah.
+Requirements: 
+DBI
 
 =head2 EXPORT
 
 None by default.
 
 
-
 =head1 SEE ALSO
 
-Mention other useful documentation such as the documentation of
-related modules or operating system documentation (such as man pages
-in UNIX), or any relevant external documentation such as RFCs or
-standards.
-
-If you have a mailing list set up for your module, mention it here.
-
-If you have a web site set up for your module, mention it here.
+The statistics can be displayed on a webpage - an example made with the Mojolicious framework is under development.
 
 =head1 AUTHOR
 
-Stéphanie Ouillon E<lt>stephanie@minet.net<gt>
+Stephanie Ouillon E<lt>stephanie@minet.net<gt>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (C) 2012 by Stéphanie Ouillon
+Copyright (C) 2012 by Stephanie Ouillon
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself, either Perl version 5.12.3 or,
