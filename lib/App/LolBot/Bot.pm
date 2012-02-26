@@ -65,7 +65,7 @@ sub run {
       }
 
       $stats->log($cmd);
-    }  
+    }
   }
 }
 
