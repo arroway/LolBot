@@ -13,5 +13,14 @@ use warnings;
 
 #$ENV{LOLBOT_APP} ||= "LolBot";
 
-my $bot = App::LolBot::Bot->new();
+print "Creating new instance of LolBot...\n";
+
+my $bot = App::LolBot::Bot->new(
+  host => "irc.minet.net",
+  port => 6667,
+  chan => "#pourlesbots",
+  nickname => "LolBot",
+);
+
+print "Bot is to being run...\n";
 $bot->run();

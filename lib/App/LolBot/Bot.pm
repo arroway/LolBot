@@ -1,54 +1,108 @@
-#! /usr/bin/env perl;
 package App::LolBot::Bot;
-use strict;
-use warnings;
-use App::LolBot::Irc;
+
+use Any::Moose;
+use App::LolBot::Server;
 use App::LolBot::Stats;
+use POSIX qw(strftime);
 
-sub new {
+has host => (
+  isa => 'Str',
+  is => 'rw',
+);
+
+has port => (
+  isa => 'Int',
+  is => 'rw',
+);
+
+has chan => (
+  isa => 'Str',
+  is => 'rw',
+);
+
+has nickname => (
+  isa => 'Str',
+  is => 'rw',
+);
+
+has server => (
+  isa => 'App::LolBot::Server',
+  is => 'rw',
+);
+
+has stats => (
+  isa => 'App::LolBot::Stats',
+  is => 'rw',
+);
+
+
+#Connection to a IRC Server
+sub connect {
+  my $self = shift;
+
+  print "Connecting on " . $self->host . ":" . $self->port . "...\n";
+
+  $self->server(
+    App::LolBot::Server->new(
+      host => $self->host,
+      port => $self->port)
+  );
+
+  $self->server->init_socket();
+}
+ 
+#For collecting stats about the chan users.
+sub collect_statistics {
+  my $self = shift;
+
+  print "New stats collector is being created...\n";
   
-  my ($class) = @_;
-  my ($this) = {
-    'host'  =>  "irc.minet.net",
-    'port'  =>  6667,
-    'nick'  =>  "LolBot",
-    'chan'  =>  "#pourlesbots"
-};
-
-  bless($this, $class);
-  return $this;
+  $self->stats(
+    App::LolBot::Stats->new(
+      db => App::LolBot::Database->instance(),
+      logLines => 0,
+      date => strftime("%Y-%m-%d", localtime()),
+      time => strftime("%Y-%m-%d", localtime()),
+      #logTime => 0,
+    )
+  );
 }
 
 sub run {
+  my $self = shift;
+  
+  print "*** LolBot initialization... ***\n";
+  
+  $self->connect();
+  $self->collect_statistics();
 
-  my ($this) = @_;
-
-  my $host = $this->{'host'};
-  my $port = $this->{'port'};
-  my $nick = $this->{'nick'};
-  my $chan = $this->{'chan'};
-  my $server = App::LolBot::Irc->new($host, $port);
-  my $stats = App::LolBot::Stats->new();
+  print "\nLet's run ! \n\n";
 
   while(1){
 
-    while(my ($prefix, $cmd, @args) = $server->recv()){
+    while(my ($prefix, $cmd, @args) = $self->server->recv()){
 
       #Identify the bot on the server
       if ($cmd eq "NOTICE" && $args[0] eq "AUTH"){
-        $server->send("NICK", $nick);
-	      $server->send("USER", ($nick, $nick, $host, ":$nick"));
+
+        print "Identifying itself  on the server...\n";
+        
+        $self->server->send("NICK", $self->nickname);
+	      $self->server->send("USER", ($self->nickname, $self->nickname, $self->host, ":" . $self->nickname));
       }
 
-      $server->send("JOIN", ($chan)) if ($cmd eq "376");
-    
+      if ($cmd eq "376"){
+        print "Joining channel " . $self->chan . "...\n";
+        $self->server->send("JOIN", ($self->chan));
+      }
+
       #Answer to the ping of the server to stay connected
-      $server->send("PONG", ($args[@args-1])) if ($cmd eq "PING");
+      $self->server->send("PONG", ($args[@args-1])) if ($cmd eq "PING");
     
       #Deal with new nicknames   
-      $stats->InitNickList(@args) if ($cmd eq "353");
-      $stats->newJoin($prefix) if ($cmd eq "JOIN");
-      $stats->changeNick($args[1]) if ($cmd eq "NICK");
+      $self->stats->InitNickList(@args) if ($cmd eq "353");
+      $self->stats->newJoin($prefix) if ($cmd eq "JOIN");
+      $self->stats->changeNick($args[1]) if ($cmd eq "NICK");
 
 
       if ($cmd eq "PRIVMSG"){
@@ -59,12 +113,12 @@ sub run {
           $userNick = $1;
         }
 
-        $stats->logUser($userNick);
-        $stats->recStats($userNick,$msg);
+        $self->stats->logUser($userNick);
+        $self->stats->recStats($userNick,$msg);
         
       }
 
-      $stats->log($cmd);
+      $self->stats->log($cmd);
     }
   }
 }
