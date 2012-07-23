@@ -1,12 +1,15 @@
-use 5.012003;
-use ExtUtils::MakeMaker;
-# See lib/ExtUtils/MakeMaker.pm for details of how to influence
-# the contents of the Makefile that is written.
-WriteMakefile(
-    NAME              => 'App::LolBot::Bot',
-    VERSION_FROM      => 'lib/App/LolBot.pm', # finds $VERSION
-    PREREQ_PM         => {}, # e.g., Module::Name => 1.1
-    ($] >= 5.005 ?     ## Add these new keywords supported since 5.005
-      (ABSTRACT_FROM  => 'lib/App/LolBot.pm', # retrieve abstract from module
-       AUTHOR         => 'Stéphanie Ouillon <stephanie@minet.net>') : ()),
-);
+use inc::Module::Install;
+name('LolBot');
+author('Stephanie Ouillon');
+license('Perl licence');
+version_from('lib/App/LolBot.pm');
+
+requires('Any::Moose');
+requires('MooseX::Singleton');
+requires('DBI');
+
+tests("t/*.t");
+#extra_tests;
+auto_install;
+&WriteAll;
+
