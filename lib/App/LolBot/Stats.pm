@@ -56,13 +56,7 @@ sub get_time{
 
 sub log(){
   my $self = shift;
-  my $cmd = @_;
-  if ($cmd eq "JOIN" or
-      $cmd eq "NICK" or 
-      $cmd eq "PRIVMSG"){
-    
-    $self->log_lines( $self->log_lines + 1 );
-  }
+  $self->log_lines( $self->log_lines + 1 );
 }
 
 sub add_nick{
@@ -228,9 +222,15 @@ sub print_interrogative {
   my $self = shift;
   my @nick_list = (@{$self->nick_list}); 
 
-  my $string = ':# Top Questions ';
-  for (my $i=0; $i< @nick_list; $i++){  
-    $string .= $nick_list[$i]->get_name() . ' (' . $nick_list[$i]->get_interrogative() . '), ';
+  my $string = ':# Top Questions: ';
+  my %hash = {};
+  my $key = '';
+  for (my $i=0; $i < @nick_list; $i++){  
+    $hash{ $nick_list[$i]->get_interrogative() } = $nick_list[$i]->get_name();
+  }
+   
+  foreach $key (reverse sort (keys(%hash))){
+    $string .= $hash{$key} . ' (' . $key . '), ' if $hash{$key};
   }
 
   return $string;
