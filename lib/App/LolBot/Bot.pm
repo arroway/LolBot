@@ -105,6 +105,8 @@ sub run {
 
       if ($cmd eq "PRIVMSG"){
      
+        $self->stats->log();
+        
         my  $msg = $args[1];
         my $user_nick = "";
         if ($prefix =~ m/:(\w+)!/){
@@ -144,7 +146,6 @@ sub run {
 
         $self->stats->rec_stats($user_nick,$msg);
       }
-      $self->stats->log($cmd);
     }
   }
 }
