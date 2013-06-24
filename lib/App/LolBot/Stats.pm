@@ -2,22 +2,14 @@ package App::LolBot::Stats;
 
 use Any::Moose;
 use App::LolBot::User;
-use App::LolBot::Database;
-use DBI;
 use POSIX qw(strftime);
 
 use constant FALSE => 0;
 use constant TRUE => 1;
 
-has db => (
-  isa => 'App::LolBot::Database',
-  is => 'rw',
-);
-
 has log_lines => (
   isa => 'Int',
   is => 'rw',
-  default => sub {0},
 );
 
 has nick_list => (
@@ -36,16 +28,6 @@ has time => (
   is => 'rw',
 );
 
-#has logTime => (
-#);
- 
-sub loadData{
-  my $self = shift;
-  foreach my $nickey (@{$self->nick_list}){
-    $nickey->loadData();
-  }  
-}
-
 sub get_log_lines{
   my $self = shift;
   return $self->log_lines if ref($self);
@@ -56,7 +38,7 @@ sub get_nick_list{
   my $string = "";
   if (ref($self)){
     foreach my $nickey (@{$self->nick_list}){
-       $string .="$nickey->name ";
+       $string .= "$nickey->name ";
     }
     return $string;
   }
@@ -72,13 +54,6 @@ sub get_time{
   return $self->time if ref($self);
 }
 
-#sub get_log_time{
-#  my $self = shift;
-#  if (ref($self)){
-#    return $self->{'logTime'};
-#  }
-#}
-
 sub log(){
   my $self = shift;
   my $cmd = @_;
@@ -86,28 +61,13 @@ sub log(){
       $cmd eq "NICK" or 
       $cmd eq "PRIVMSG"){
     
-    $self->log_lines += 1;
+    $self->log_lines( $self->log_lines + 1 );
   }
-}
-
-sub log_user(){
-  my $self = shift;
-  my $userNick = @_;
-  
-  my @nick_list = (@{$self->nick_list}); 
-  
-  for (my $i=0; $i < @nick_list; $i++){
-     if ($userNick eq $nick_list[$i]->name){
-       $nick_list[$i]->logUser();
-       print "logUser: " . $userNick;
-       $nick_list[$i]->getLog();
-     }
-   }
 }
 
 sub add_nick{
   my $self = shift;
-  my ($new_nick) = @_;
+  my $new_nick = shift;
   my $present = FALSE;
   for my $nick (@{$self->nick_list}){
     if ($nick->name eq $new_nick){
@@ -118,18 +78,16 @@ sub add_nick{
   if ($present == FALSE){
     my $new_nick_object = 
       App::LolBot::User->new( 
-        db => $self->db,
         name => $new_nick,
     );
 
     push((@{$self->nick_list}), $new_nick_object);
-    App::LolBot::Database->insert($new_nick);
   }
 }
 
 sub list_nick(){
   my $self = shift;
-  my (@nicks) = @_;
+  my @nicks = shift;
   my $new_nick = "";
 
   foreach my $key (@nicks){
@@ -155,14 +113,15 @@ sub print_nick_list{
 sub init_nick_list{
   
   my $self = shift;
-  my ($foo, @nicklist) = @_;
+  my $foo = shift;
+  my @nicklist = shift;
   $self->list_nick($nicklist[0]); 
   $self->print_nick_list();
 }
 
 sub new_join{
   my $self = shift;
-  my ($prefix) = @_;
+  my $prefix = shift;
   my $user_nick = "";
   if ($prefix =~ m/:(.*)!/){
     $user_nick = $1;
@@ -173,7 +132,7 @@ sub new_join{
 
 sub change_nick{
   my $self = shift;
-  my ($user_nick) = @_;
+  my $user_nick = shift;
   if($user_nick =~ m/:(.*)/){
     $user_nick = $1;
   }
@@ -181,20 +140,144 @@ sub change_nick{
   $self->print_nick_list();
 }
 
+sub rage_o_meter {
+  my $self = shift;
+  my $rageur = shift;
+
+  my @nick_list = (@{$self->nick_list}); 
+  
+  for (my $i=0; $i< @nick_list; $i++){  
+    if ($rageur eq $nick_list[$i]->name){
+      $nick_list[$i]->add_rage();
+      return;
+    }
+  }
+}
+
 sub rec_stats{
   my $self = shift;
-  my ($user_nick,$msg) = @_;
+  my $user_nick = shift;
+  my $msg = shift;
   my @nick_list = (@{$self->nick_list}); 
   
   for (my $i=0; $i< @nick_list; $i++){  
     if ($user_nick eq $nick_list[$i]->name){
  
+      $nick_list[$i]->log_user();
       $nick_list[$i]->find_lol($msg);
-      $nick_list[$i]->find_exclamative($msg);
       $nick_list[$i]->find_interrogative($msg);
       $nick_list[$i]->find_capslock($msg);
+      return;
      }
    }
 }
+
+sub print_log {
+  my $self = shift;
+  my @nick_list = (@{$self->nick_list}); 
+  my $string = '';
+  my @result = [];
+
+  $string = ':##### LOGS #####';
+  push(@result, $string);
+  
+  $string = ':# Total: ' . $self->log_lines;
+  push(@result, $string);
+  
+  $string = ':# Since ' . $self->date . ' ' . $self->time;
+  push(@result, $string);
+  $string = ':# ';
+  push(@result, $string);
+  
+  for (my $i=0; $i< @nick_list; $i++){  
+    $string = ':# ' . $nick_list[$i]->get_name() . ' ' . $nick_list[$i]->get_logs();
+    print $string;
+    push(@result, $string);
+  }
+  
+  $string = ':############################';
+  push(@result, $string);
+  
+  return @result;
+}
+
+
+sub print_rage_o_meter {
+  my $self = shift;
+  my @nick_list = (@{$self->nick_list}); 
+  my $string = '';
+  my @result = [];
+
+  $string = ':##### RAGE-O-METER !!! #####';
+  push(@result, $string);
+  
+  for (my $i=0; $i< @nick_list; $i++){  
+    $string = ':# ' . $nick_list[$i]->get_name() . ' ' . $nick_list[$i]->get_rage();
+    print $string;
+    push(@result, $string);
+  }
+  
+  $string = ':############################';
+  push(@result, $string);
+  
+  return @result;
+}
+
+sub print_lol {
+  my $self = shift;
+  my @nick_list = (@{$self->nick_list}); 
+  my $string = '';
+  my @result = [];
+
+  $string = ':##### WHO IS LOLING ? ######';
+  push(@result, $string);
+  
+  for (my $i=0; $i< @nick_list; $i++){  
+    $string = ':# ' . $nick_list[$i]->get_name() . ' ' . $nick_list[$i]->get_lol();
+    print $string;
+    push(@result, $string);
+  }
+  
+  $string = ':############################';
+  push(@result, $string);
+  
+  return @result;
+}
+
+sub print_capslock {
+  my $self = shift;
+  my @nick_list = (@{$self->nick_list}); 
+  my $string = '';
+  my @result = [];
+
+  $string = ':##### LES CAPSLOCKERS ######';
+  push(@result, $string);
+  
+  for (my $i=0; $i< @nick_list; $i++){  
+    $string = ':# ' . $nick_list[$i]->get_name() . ' ' . $nick_list[$i]->get_capslock();
+    print $string;
+    push(@result, $string);
+  }
+  
+  $string = ':############################';
+  push(@result, $string);
+  
+  return @result;
+}
+
+sub print_interrogative {
+  my $self = shift;
+  my @nick_list = (@{$self->nick_list}); 
+  my $string = '';
+  my @result = [];
+
+  for (my $i=0; $i< @nick_list; $i++){  
+    $string = ':Top Questions: ' . $nick_list[$i]->get_name() . ' (' . $nick_list[$i]->get_interrogative() . '), ';
+  }
+  push(@result, $string);
+  
+  return @result;
+}
+
 
 1;

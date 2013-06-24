@@ -59,11 +59,9 @@ sub collect_statistics {
   
   $self->stats(
     App::LolBot::Stats->new(
-      db => App::LolBot::Database->instance(),
-      logLines => 0,
+      log_lines => 0,
       date => strftime("%Y-%m-%d", localtime()),
       time => strftime("%Y-%m-%d", localtime()),
-      #logTime => 0,
     )
   );
 }
@@ -106,20 +104,64 @@ sub run {
 
 
       if ($cmd eq "PRIVMSG"){
-      
-        my ($chan, $msg) = @args;
+     
+        my  $msg = $args[1];
         my $user_nick = "";
         if ($prefix =~ m/:(\w+)!/){
           $user_nick = $1;
         }
 
-        $self->stats->log_user($user_nick);
-        $self->stats->rec_stats($user_nick,$msg);
-        
-      }
+        if ($msg =~ m/:c'est qui LolBot/) {
+          my @welcome = (':', ':Bonjour, je suis un LolBot. Contrairement à ce que mon nom peut laisser penser, je ne lol pas (pas comme Fallen). !help !rtfm');
+          $self->send(@welcome, 'PRIVMSG');
+        }
 
+        if ($msg =~ m/^:!help$/) {
+          my @help = (':', ':LOL LOL LOL LOL LOL LOL LOL *oups*');
+          $self->send(@help, 'PRIVMSG');
+        }
+
+        if ($msg =~ m/^:!rtfm$/) {
+          my @rtfm = (':', ':###### THE FUCKING MANUAL ######',
+                   ':# !rtfm: affiche cette aide',
+                   ':# !rage: rage-o-meter',
+                   ':# !lol: les lolers psychiatriques',
+                   ':# !capslock: CAPSLOCK ! CAPSLOCK !',
+                   ':# !questions: qui pose trop de questions ?',
+                   ':############################');
+          $self->send(@rtfm, 'NOTICE');
+        }
+
+        $self->stats->rage_o_meter($1) if $msg =~m/^:!rage\s(\w+)$/;
+        my @rage = $self->stats->print_rage_o_meter($1) if $msg =~m/^:!rage$/;
+        $self->send(@rage, 'PRIVMSG') if (@rage);
+        
+        my @lol = $self->stats->print_lol($1) if $msg =~m/^:!lol$/;
+        $self->send(@lol, 'PRIVMSG') if (@lol);
+        
+        my @log = $self->stats->print_log($1) if $msg =~m/^:!log$/;
+        $self->send(@log, 'PRIVMSG') if (@log);
+        
+        my @capslock = $self->stats->print_capslock($1) if $msg =~m/^:!capslock$/;
+        $self->send(@capslock, 'PRIVMSG') if (@capslock);
+
+        my @questions = $self->stats->print_interrogative($1) if $msg =~m/^:!questions$/;
+        $self->send(@questions, 'PRIVMSG') if (@questions);
+
+        $self->stats->rec_stats($user_nick,$msg);
+      }
       $self->stats->log($cmd);
     }
+  }
+}
+
+sub send {
+  my $self = shift;
+  my (@output, $cmd) = @_;
+
+  for(my $i=1; $i< @output; $i++){
+    my @args = ($self->chan, $output[$i]);
+    $self->server->send($cmd, @args);
   }
 }
 

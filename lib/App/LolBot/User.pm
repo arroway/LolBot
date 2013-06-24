@@ -1,28 +1,10 @@
 package App::LolBot::User;
 
-use App::LolBot::Database;
 use Any::Moose;
-
-has db => (
-  isa => 'App::LolBot::Database',
-  is => 'rw',
-);
 
 has name => (
   isa => 'Str',
   is => 'rw',
-);
-
-has capslock => (
-  isa => 'Int',
-  is => 'rw',
-  default => sub {0},
-);
-
-has exclamative => (
-  isa => 'Int',
-  is => 'rw',
-  default => sub {0},
 );
 
 has interrogative => (
@@ -37,12 +19,23 @@ has lol => (
   default => sub {0},
 );
 
-has log => (
+has rage => (
   isa => 'Int',
   is => 'rw',
   default => sub {0},
 );
 
+has capslock => (
+  isa => 'Int',
+  is => 'rw',
+  default => sub {0},
+);
+
+has log => (
+  isa => 'Int',
+  is => 'rw',
+  default => sub {0},
+);
 
 sub reset_all_counters{
   my $self = shift;
@@ -51,20 +44,11 @@ sub reset_all_counters{
     $self->exclamative = 0;
     $self->interrogative = 0;
     $self->lol = 0;
+    $self->rage = 0;
+    $self->capslock = 0;
     $self->log = 0;
   }
 }
-
-#sub load_data{
-#  my ($self) = @_;
-#  App::LolBot::Database->do("INSERT INTO nicknames (name, capslock, exclamative, interrogative, lol, log) VALUES ('$self->{'name'}', 
-#    $self->{'capslock'}, 
-#    $self->{'exclamative'}, 
-#    $self->{'interrogative'}, 
-#    $self->{'lol'},
-#    $self->{'log'})");
-  #App::LolBot::Database->commit();
-#}
 
 sub get_name{
   my $self = shift;
@@ -74,80 +58,72 @@ sub get_name{
 sub get_capslock{
   my $self = shift;
   return $self->capslock if ref($self);
- 
 }
 
-sub getExclamative{
+sub get_exclamative{
   my $self = shift;
   return $self->exclamative if ref($self);
 }
 
-sub getInterrogative{
+sub get_interrogative{
   my $self = shift;
   return $self->interrogative if ref($self);
 }
 
-sub getLol{
+sub get_lol{
   my $self = shift;
   return $self->lol if ref($self);
 }
 
-sub getLog {
+sub get_rage {
+  my $self = shift;
+  return $self->rage if ref($self);
+}
+
+sub get_log {
   my $self = shift;
   return $self->log if ref($self);
 }
-
 
 sub find_capslock{
   
   #in argument: what has just said the user
   my $self = shift;
-  my $line = @_;
+  my $line = shift;
 
   #XXX: elaborate regex
   if ($line =~ m/([0-9!\?:;,=\+\(\)\.\/\t\n\r\f])*?/ and
       $line =~ m/[A-Z]+?/ and
       not $line =~ m/[a-z]+?/){
-    $self->capslock += 1;
-    App::LolBot::Database->update($self->name, "capslock", $self->capslock);
+    $self->capslock( $self->capslock + 1 );
   }
-}
-
-sub find_exclamative{
-  my $self = shift;
-  my $line = @_;
-  #XXX
-  if ($line =~ m/[\!]/ ){
-    $self->exclamative += 1;
-    App::LolBot::Database->update($self->name, "exclamative", $self->exclamative);
-  }  
 }
 
 sub find_interrogative{
   my $self = shift;
-  my $line = @_;
+  my $line = shift;
   #XXX
-  if ($line =~ m/[\?]/ ){
-    $self->interrogative += 1;
-    App::LolBot::Database->update($self->name, "interrogative", $self->interrogative);
+  if ($line =~ m/\?/g ){
+    $self->interrogative( $self->interrogative + 1 );
   }  
 }
 
 sub find_lol{
   my $self = shift;
-  my $msg = @_;
-  print "findlol line: $msg\n";
+  my $msg = shift;
   while ($msg =~ m/lol/g){
-    $self->lol += 1;
-    App::LolBot::Database->update($self->name, "lol", $self->lol);
+    $self->lol( $self->log + 1 );
   }
+}
+
+sub add_rage {
+  my $self = shift;
+  $self->rage( $self->rage + 1 );
 }
 
 sub log_user{
   my $self = shift;
-  $self->log += 1;
-  App::LolBot::Database->update($self->name, "log", $self->log);
- 
+  $self->log( $self->log + 1 );
 }
 
 1;
