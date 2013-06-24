@@ -16,51 +16,31 @@ has name => (
 has capslock => (
   isa => 'Int',
   is => 'rw',
-  default => sub {
-    my $self = shift;
-    my $counter = 0;
-    return $counter;
-  }
+  default => sub {0},
 );
 
 has exclamative => (
   isa => 'Int',
   is => 'rw',
-  default => sub {
-    my $self = shift;
-    my $counter = 0;
-    return $counter;
-  }
+  default => sub {0},
 );
 
 has interrogative => (
   isa => 'Int',
   is => 'rw',
-  default => sub {
-    my $self = shift;
-    my $counter = 0;
-    return $counter;
-  }
+  default => sub {0},
 );
 
 has lol => (
   isa => 'Int',
   is => 'rw',
-  default => sub {
-    my $self = shift;
-    my $counter = 0;
-    return $counter;
-  }
+  default => sub {0},
 );
 
 has log => (
   isa => 'Int',
   is => 'rw',
-  default => sub {
-    my $self = shift;
-    my $counter = 0;
-    return $counter;
-  }
+  default => sub {0},
 );
 
 

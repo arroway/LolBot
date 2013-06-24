@@ -22,10 +22,7 @@ has logLines => (
 has nickList => (
   isa => 'ArrayRef',
   is => 'rw',
-  default => sub {
-    my $self = shift;
-    return [];
-  }
+  default => sub {[]},
 );
 
 has date => (
