@@ -180,7 +180,7 @@ sub print_log {
   $string .= 'since ' . $self->date . ' ' . $self->time . ' ';
   
   for (my $i=0; $i< @nick_list; $i++){  
-    $string .= $nick_list[$i]->get_name() . ' (' . $nick_list[$i]->get_logs() . '), ';
+    $string .= $nick_list[$i]->get_name() . ' (' . $nick_list[$i]->get_log() . '), ';
   }
   
   return $string;
@@ -203,7 +203,7 @@ sub print_lol {
   my $self = shift;
   my @nick_list = (@{$self->nick_list}); 
 
-  my $string = '# Top Lol\'ers: ';
+  my $string = ':# Top Lol\'ers: ';
   for (my $i=0; $i< @nick_list; $i++){  
     $string .= $nick_list[$i]->get_name() . ' (' . $nick_list[$i]->get_lol() . '), ';
   }

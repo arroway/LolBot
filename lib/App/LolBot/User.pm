@@ -112,7 +112,7 @@ sub find_lol{
   my $self = shift;
   my $msg = shift;
   while ($msg =~ m/lol/g){
-    $self->lol( $self->log + 1 );
+    $self->lol( $self->lol + 1 );
   }
 }
 
