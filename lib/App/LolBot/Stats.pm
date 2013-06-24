@@ -47,9 +47,7 @@ sub loadData{
 
 sub getLogLines{
   my $self = shift;
-  if (ref($self)){
-    return $self->logLines;
-  }
+  return $self->logLines if ref($self);
 }
 
 sub getNickList{
@@ -65,16 +63,12 @@ sub getNickList{
 
 sub getDate{
   my $self = shift;
-  if (ref($self)){
-    return $self->date;
-  }
+  return $self->date if ref($self);
 }
 
 sub getTime{
   my $self = shift;
-  if (ref($self)){
-    return $self->time;
-  }
+  return $self->time if ref($self);
 }
 
 #sub getLogTime{
