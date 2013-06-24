@@ -14,12 +14,13 @@ has db => (
   is => 'rw',
 );
 
-has logLines => (
+has log_lines => (
   isa => 'Int',
   is => 'rw',
+  default => sub {0},
 );
 
-has nickList => (
+has nick_list => (
   isa => 'ArrayRef',
   is => 'rw',
   default => sub {[]},
@@ -40,38 +41,38 @@ has time => (
  
 sub loadData{
   my $self = shift;
-  foreach my $nickey (@{$self->nickList}){
+  foreach my $nickey (@{$self->nick_list}){
     $nickey->loadData();
   }  
 }
 
-sub getLogLines{
+sub get_log_lines{
   my $self = shift;
-  return $self->logLines if ref($self);
+  return $self->log_lines if ref($self);
 }
 
-sub getNickList{
+sub get_nick_list{
   my $self = shift;
   my $string = "";
   if (ref($self)){
-    foreach my $nickey (@{$self->nickList}){
+    foreach my $nickey (@{$self->nick_list}){
        $string .="$nickey->name ";
     }
     return $string;
   }
 }
 
-sub getDate{
+sub get_date{
   my $self = shift;
   return $self->date if ref($self);
 }
 
-sub getTime{
+sub get_time{
   my $self = shift;
   return $self->time if ref($self);
 }
 
-#sub getLogTime{
+#sub get_log_time{
 #  my $self = shift;
 #  if (ref($self)){
 #    return $self->{'logTime'};
@@ -85,118 +86,115 @@ sub log(){
       $cmd eq "NICK" or 
       $cmd eq "PRIVMSG"){
     
-    $self->logLines += 1;
+    $self->log_lines += 1;
   }
 }
 
-sub logUser(){
+sub log_user(){
   my $self = shift;
   my $userNick = @_;
   
-  my @nickList = (@{$self->nickList}); 
+  my @nick_list = (@{$self->nick_list}); 
   
-  for (my $i=0; $i < @nickList; $i++){
-     if ($userNick eq $nickList[$i]->name){
-       $nickList[$i]->logUser();
+  for (my $i=0; $i < @nick_list; $i++){
+     if ($userNick eq $nick_list[$i]->name){
+       $nick_list[$i]->logUser();
        print "logUser: " . $userNick;
-       $nickList[$i]->getLog();
+       $nick_list[$i]->getLog();
      }
    }
 }
 
-sub addNick{
+sub add_nick{
   my $self = shift;
-  my ($newNick) = @_;
+  my ($new_nick) = @_;
   my $present = FALSE;
-  for my $nick (@{$self->nickList}){
-    if ($nick->name eq $newNick){
+  for my $nick (@{$self->nick_list}){
+    if ($nick->name eq $new_nick){
       $present = TRUE;     
     }
   }
 
   if ($present == FALSE){
-    my $newNickObject = 
+    my $new_nick_object = 
       App::LolBot::User->new( 
         db => $self->db,
-        name => $newNick,
+        name => $new_nick,
     );
 
-    push((@{$self->nickList}), $newNickObject);
-    App::LolBot::Database->insert($newNick);
+    push((@{$self->nick_list}), $new_nick_object);
+    App::LolBot::Database->insert($new_nick);
   }
 }
 
-sub listNick(){
+sub list_nick(){
   my $self = shift;
   my (@nicks) = @_;
-  my $newNick = "";
+  my $new_nick = "";
 
   foreach my $key (@nicks){
     
     while ($key){
       if ($key =~ m/(\w+)/){
-        $newNick = $1;
+        $new_nick = $1;
         $key = $';
-        $self->addNick($newNick);
+        $self->add_nick($new_nick);
       }
     }
   }
 }
 
-sub printNickList{
+sub print_nick_list{
  
   my $self = shift;
-  foreach my $nickey (@{$self->nickList}){
+  foreach my $nickey (@{$self->nick_list}){
     print $nickey->name . "\n";
   }  
 }
 
-sub InitNickList{
+sub init_nick_list{
   
   my $self = shift;
   my ($foo, @nicklist) = @_;
-  $self->listNick($nicklist[0]); 
-  $self->printNickList();
+  $self->list_nick($nicklist[0]); 
+  $self->print_nick_list();
 }
 
-sub newJoin{
+sub new_join{
   my $self = shift;
   my ($prefix) = @_;
-  my $userNick = "";
+  my $user_nick = "";
   if ($prefix =~ m/:(.*)!/){
-    $userNick = $1;
+    $user_nick = $1;
   }
-  $self->addNick($userNick);
-  $self->printNickList();
+  $self->add_nick($user_nick);
+  $self->print_nick_list();
 }
 
-sub changeNick{
+sub change_nick{
   my $self = shift;
-  my ($userNick) = @_;
-  if($userNick =~ m/:(.*)/){
-    $userNick = $1;
+  my ($user_nick) = @_;
+  if($user_nick =~ m/:(.*)/){
+    $user_nick = $1;
   }
-  $self->addNick($userNick);
-  $self->printNickList();
+  $self->add_nick($user_nick);
+  $self->print_nick_list();
 }
 
-sub recStats{
+sub rec_stats{
   my $self = shift;
-  my ($userNick,$msg) = @_;
-  my @nickList = (@{$self->nickList}); 
+  my ($user_nick,$msg) = @_;
+  my @nick_list = (@{$self->nick_list}); 
   
-  for (my $i=0; $i< @nickList; $i++){  
-    if ($userNick eq $nickList[$i]->name){
+  for (my $i=0; $i< @nick_list; $i++){  
+    if ($user_nick eq $nick_list[$i]->name){
  
-      $nickList[$i]->findLol($msg);
-      $nickList[$i]->findExclamative($msg);
-      $nickList[$i]->findInterrogative($msg);
-      $nickList[$i]->findCapslock($msg);
+      $nick_list[$i]->find_lol($msg);
+      $nick_list[$i]->find_exclamative($msg);
+      $nick_list[$i]->find_interrogative($msg);
+      $nick_list[$i]->find_capslock($msg);
      }
    }
-}
-
-sub getCurrentNick{
 }
 
 1;

@@ -100,21 +100,21 @@ sub run {
       $self->server->send("PONG", ($args[@args-1])) if ($cmd eq "PING");
     
       #Deal with new nicknames   
-      $self->stats->InitNickList(@args) if ($cmd eq "353");
-      $self->stats->newJoin($prefix) if ($cmd eq "JOIN");
-      $self->stats->changeNick($args[1]) if ($cmd eq "NICK");
+      $self->stats->init_nick_list(@args) if ($cmd eq "353");
+      $self->stats->new_join($prefix) if ($cmd eq "JOIN");
+      $self->stats->change_nick($args[1]) if ($cmd eq "NICK");
 
 
       if ($cmd eq "PRIVMSG"){
       
         my ($chan, $msg) = @args;
-        my $userNick = "";
+        my $user_nick = "";
         if ($prefix =~ m/:(\w+)!/){
-          $userNick = $1;
+          $user_nick = $1;
         }
 
-        $self->stats->logUser($userNick);
-        $self->stats->recStats($userNick,$msg);
+        $self->stats->log_user($user_nick);
+        $self->stats->rec_stats($user_nick,$msg);
         
       }
 

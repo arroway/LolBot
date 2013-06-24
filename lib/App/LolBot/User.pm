@@ -44,7 +44,7 @@ has log => (
 );
 
 
-sub resetAllCounters{
+sub reset_all_counters{
   my $self = shift;
   if (ref($self)){
     $self->capslock = 0;
@@ -55,7 +55,7 @@ sub resetAllCounters{
   }
 }
 
-#sub loadData{
+#sub load_data{
 #  my ($self) = @_;
 #  App::LolBot::Database->do("INSERT INTO nicknames (name, capslock, exclamative, interrogative, lol, log) VALUES ('$self->{'name'}', 
 #    $self->{'capslock'}, 
@@ -66,53 +66,39 @@ sub resetAllCounters{
   #App::LolBot::Database->commit();
 #}
 
-sub getName{
+sub get_name{
   my $self = shift;
-  if (ref($self)){
-    return $self->name;
-  }
+  return $self->name if ref($self);
 }
 
-sub getCapslock{
+sub get_capslock{
   my $self = shift;
-  if (ref($self)){
-    return $self->capslock;
-  }
+  return $self->capslock if ref($self);
  
 }
 
 sub getExclamative{
   my $self = shift;
-  if (ref($self)){
-    return $self->exclamative;
-  }
+  return $self->exclamative if ref($self);
 }
 
 sub getInterrogative{
   my $self = shift;
-  if (ref($self)){
-    return $self->interrogative;
-  }
+  return $self->interrogative if ref($self);
 }
 
 sub getLol{
   my $self = shift;
-  if (ref($self)){
-    print "$self->lol\n";
-    return $self->lol;
-  }
+  return $self->lol if ref($self);
 }
 
 sub getLog {
   my $self = shift;
-  if (ref($self)){
-    print "$self->log\n";
-    return $self->log;
-  }
+  return $self->log if ref($self);
 }
 
 
-sub findCapslock{
+sub find_capslock{
   
   #in argument: what has just said the user
   my $self = shift;
@@ -127,7 +113,7 @@ sub findCapslock{
   }
 }
 
-sub findExclamative{
+sub find_exclamative{
   my $self = shift;
   my $line = @_;
   #XXX
@@ -137,7 +123,7 @@ sub findExclamative{
   }  
 }
 
-sub findInterrogative{
+sub find_interrogative{
   my $self = shift;
   my $line = @_;
   #XXX
@@ -147,7 +133,7 @@ sub findInterrogative{
   }  
 }
 
-sub findLol{
+sub find_lol{
   my $self = shift;
   my $msg = @_;
   print "findlol line: $msg\n";
@@ -157,7 +143,7 @@ sub findLol{
   }
 }
 
-sub logUser{
+sub log_user{
   my $self = shift;
   $self->log += 1;
   App::LolBot::Database->update($self->name, "log", $self->log);
