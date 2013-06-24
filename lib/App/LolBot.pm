@@ -3,7 +3,6 @@ package App::LolBot;
 use Any::Moose;
 
 use App::LolBot::Bot;
-use App::LolBot::Irc;
 use App::LolBot::Stats;
 use App::LolBot::User;
 
