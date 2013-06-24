@@ -175,108 +175,65 @@ sub rec_stats{
 sub print_log {
   my $self = shift;
   my @nick_list = (@{$self->nick_list}); 
-  my $string = '';
-  my @result = [];
 
-  $string = ':##### LOGS #####';
-  push(@result, $string);
-  
-  $string = ':# Total: ' . $self->log_lines;
-  push(@result, $string);
-  
-  $string = ':# Since ' . $self->date . ' ' . $self->time;
-  push(@result, $string);
-  $string = ':# ';
-  push(@result, $string);
+  my $string = ':#' . $self->log_lines . ' lines ';
+  $string .= 'since ' . $self->date . ' ' . $self->time . ' ';
   
   for (my $i=0; $i< @nick_list; $i++){  
-    $string = ':# ' . $nick_list[$i]->get_name() . ' ' . $nick_list[$i]->get_logs();
-    print $string;
-    push(@result, $string);
+    $string .= $nick_list[$i]->get_name() . ' (' . $nick_list[$i]->get_logs() . '), ';
   }
   
-  $string = ':############################';
-  push(@result, $string);
-  
-  return @result;
+  return $string;
 }
 
 
 sub print_rage_o_meter {
   my $self = shift;
   my @nick_list = (@{$self->nick_list}); 
-  my $string = '';
-  my @result = [];
 
-  $string = ':##### RAGE-O-METER !!! #####';
-  push(@result, $string);
-  
+  my $string = ':# Rage-o-meter: '; 
   for (my $i=0; $i< @nick_list; $i++){  
-    $string = ':# ' . $nick_list[$i]->get_name() . ' ' . $nick_list[$i]->get_rage();
-    print $string;
-    push(@result, $string);
+    $string .= $nick_list[$i]->get_name() . ' (' . $nick_list[$i]->get_rage() . '), ';
   }
   
-  $string = ':############################';
-  push(@result, $string);
-  
-  return @result;
+  return $string;
 }
 
 sub print_lol {
   my $self = shift;
   my @nick_list = (@{$self->nick_list}); 
-  my $string = '';
-  my @result = [];
 
-  $string = ':##### WHO IS LOLING ? ######';
-  push(@result, $string);
-  
+  my $string = '# Top Lol\'ers: ';
   for (my $i=0; $i< @nick_list; $i++){  
-    $string = ':# ' . $nick_list[$i]->get_name() . ' ' . $nick_list[$i]->get_lol();
-    print $string;
-    push(@result, $string);
+    $string .= $nick_list[$i]->get_name() . ' (' . $nick_list[$i]->get_lol() . '), ';
   }
-  
-  $string = ':############################';
-  push(@result, $string);
-  
-  return @result;
+
+  return $string;
 }
 
 sub print_capslock {
   my $self = shift;
   my @nick_list = (@{$self->nick_list}); 
-  my $string = '';
-  my @result = [];
 
-  $string = ':##### LES CAPSLOCKERS ######';
-  push(@result, $string);
+  my $string = ':# TOP CAPSLOCKERS: ';
   
   for (my $i=0; $i< @nick_list; $i++){  
-    $string = ':# ' . $nick_list[$i]->get_name() . ' ' . $nick_list[$i]->get_capslock();
-    print $string;
-    push(@result, $string);
+    $string .= $nick_list[$i]->get_name() . ' (' . $nick_list[$i]->get_capslock() . ') ';
   }
   
-  $string = ':############################';
-  push(@result, $string);
-  
-  return @result;
+  return $string;
 }
 
 sub print_interrogative {
   my $self = shift;
   my @nick_list = (@{$self->nick_list}); 
-  my $string = '';
-  my @result = [];
 
+  my $string = ':# Top Questions ';
   for (my $i=0; $i< @nick_list; $i++){  
-    $string = ':Top Questions: ' . $nick_list[$i]->get_name() . ' (' . $nick_list[$i]->get_interrogative() . '), ';
+    $string .= $nick_list[$i]->get_name() . ' (' . $nick_list[$i]->get_interrogative() . '), ';
   }
-  push(@result, $string);
-  
-  return @result;
+
+  return $string;
 }
 
 
