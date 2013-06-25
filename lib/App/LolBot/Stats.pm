@@ -170,8 +170,8 @@ sub print_log {
   my $self = shift;
   my @nick_list = (@{$self->nick_list}); 
 
-  my $string = ':#' . $self->log_lines . ' lines ';
-  $string .= 'since ' . $self->date . ' ' . $self->time . ' ';
+  my $string = ':#' . $self->log_lines . ' lignes ';
+  $string .= 'depuis ' . $self->date . ' ' . $self->time . ' ';
   
   my %hash = ();
   my $key = '';

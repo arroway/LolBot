@@ -61,7 +61,7 @@ sub collect_statistics {
     App::LolBot::Stats->new(
       log_lines => 0,
       date => strftime("%Y-%m-%d", localtime()),
-      time => strftime("%Y-%m-%d", localtime()),
+      time => strftime("%H:%M:%S", localtime()),
     )
   );
 }
