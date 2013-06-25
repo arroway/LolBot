@@ -18,7 +18,7 @@ print "Creating new instance of LolBot...\n";
 my $bot = App::LolBot::Bot->new(
   host => "irc.minet.net",
   port => 6667,
-  chan => "#pourlesbots",
+  chan => "#int",
   nickname => "LolBot",
 );
 

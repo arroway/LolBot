@@ -53,12 +53,15 @@ sub recv {
   my $line = <$socket>;
   my @args = (0,0,[]);
 
-  #print "Processing message reception... \n";
-  
   if ($line){
     @args = ($line =~ m/^(\:[^ \t]+[ \t])??([0-9A-Za-z]+?[ \t])([^ \t]+?[ \t])*?(\:.+)?\r\n$/);
-  
-    print $line . "\n";
+
+    print "line: " . $line . "\n";
+    print "1: " . $args[0] . "\n";
+    print "2: " . $args[1] . "\n";
+    print "3: " . $args[2] . "\n";
+    print "4: " . $args[3] . "\n";
+
     #Suppression de l'espace final, s'il est présent
     for (my $i=0; $i<@args; $i++){
       #XXX: Use of uninitialized value $args[..] in pattern match (m//)

@@ -85,9 +85,8 @@ sub list_nick(){
   my $new_nick = "";
 
   foreach my $key (@nicks){
-    
     while ($key){
-      if ($key =~ m/(\w+)/){
+      if ($key =~ m/([a-zA-Z0-9%~\[\]\(\).<>&@_-\:+]+)/){
         $new_nick = $1;
         $key = $';
         $self->add_nick($new_nick);
@@ -107,7 +106,7 @@ sub print_nick_list{
 sub init_nick_list{
   
   my $self = shift;
-  my $foo = shift;
+  my $chan = shift;
   my @nicklist = shift;
   $self->list_nick($nicklist[0]); 
   $self->print_nick_list();

@@ -97,7 +97,7 @@ sub run {
       #Answer to the ping of the server to stay connected
       $self->server->send("PONG", ($args[@args-1])) if ($cmd eq "PING");
     
-      #Deal with new nicknames   
+      #Deal with new nicknames 
       $self->stats->init_nick_list(@args) if ($cmd eq "353");
       $self->stats->new_join($prefix) if ($cmd eq "JOIN");
       $self->stats->change_nick($args[1]) if ($cmd eq "NICK");
