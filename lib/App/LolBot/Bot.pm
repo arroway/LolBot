@@ -124,7 +124,7 @@ sub run {
         }
 
         if ($msg =~ m/^:!rtfm$/) {
-          my $rtfm = (':THE FUCKING MANUAL: !rtfm (affiche cette aide), !rage (rage-o-meter), !lol (les lolers psychiatriques), !capslock (CAPSLOCK ! CAPSLOCK !), !questions (qui pose trop de questions ?)');
+          my $rtfm = (':THE FUCKING MANUAL: !rtfm (affiche cette aide), !rage [pseudo] (rage-o-meter), !lol (les lolers psychiatriques), !capslock (CAPSLOCK ! CAPSLOCK !), !questions (qui pose trop de questions ?)');
           $self->send($rtfm, 'NOTICE');
         }
 
