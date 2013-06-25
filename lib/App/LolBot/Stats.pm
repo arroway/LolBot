@@ -173,8 +173,14 @@ sub print_log {
   my $string = ':#' . $self->log_lines . ' lines ';
   $string .= 'since ' . $self->date . ' ' . $self->time . ' ';
   
-  for (my $i=0; $i< @nick_list; $i++){  
-    $string .= $nick_list[$i]->get_name() . ' (' . $nick_list[$i]->get_log() . '), ';
+  my %hash = {};
+  my $key = '';
+  for (my $i=0; $i < @nick_list; $i++){  
+    $hash{ $nick_list[$i]->get_log() } = $nick_list[$i]->get_name();
+  }
+   
+  foreach $key (reverse sort (keys(%hash))){
+    $string .= $hash{$key} . ' (' . $key . '), ' if $hash{$key};
   }
   
   return $string;
@@ -186,8 +192,14 @@ sub print_rage_o_meter {
   my @nick_list = (@{$self->nick_list}); 
 
   my $string = ':# Rage-o-meter: '; 
-  for (my $i=0; $i< @nick_list; $i++){  
-    $string .= $nick_list[$i]->get_name() . ' (' . $nick_list[$i]->get_rage() . '), ';
+  my %hash = {};
+  my $key = '';
+  for (my $i=0; $i < @nick_list; $i++){  
+    $hash{ $nick_list[$i]->get_rage() } = $nick_list[$i]->get_name();
+  }
+   
+  foreach $key (reverse sort (keys(%hash))){
+    $string .= $hash{$key} . ' (' . $key . '), ' if $hash{$key};
   }
   
   return $string;
@@ -198,8 +210,14 @@ sub print_lol {
   my @nick_list = (@{$self->nick_list}); 
 
   my $string = ':# Top Lol\'ers: ';
-  for (my $i=0; $i< @nick_list; $i++){  
-    $string .= $nick_list[$i]->get_name() . ' (' . $nick_list[$i]->get_lol() . '), ';
+  my %hash = {};
+  my $key = '';
+  for (my $i=0; $i < @nick_list; $i++){  
+    $hash{ $nick_list[$i]->get_lol() } = $nick_list[$i]->get_name();
+  }
+   
+  foreach $key (reverse sort (keys(%hash))){
+    $string .= $hash{$key} . ' (' . $key . '), ' if $hash{$key};
   }
 
   return $string;
@@ -210,9 +228,14 @@ sub print_capslock {
   my @nick_list = (@{$self->nick_list}); 
 
   my $string = ':# TOP CAPSLOCKERS: ';
-  
-  for (my $i=0; $i< @nick_list; $i++){  
-    $string .= $nick_list[$i]->get_name() . ' (' . $nick_list[$i]->get_capslock() . ') ';
+  my %hash = {};
+  my $key = '';
+  for (my $i=0; $i < @nick_list; $i++){  
+    $hash{ uc $nick_list[$i]->get_capslock() } = $nick_list[$i]->get_name();
+  }
+   
+  foreach $key (reverse sort (keys(%hash))){
+    $string .= $hash{$key} . ' (' . $key . '), ' if $hash{$key};
   }
   
   return $string;
