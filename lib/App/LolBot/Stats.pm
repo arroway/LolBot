@@ -176,11 +176,13 @@ sub print_log {
   my %hash = ();
   my $key = '';
   for (my $i=0; $i < @nick_list; $i++){  
-    $hash{ $nick_list[$i]->get_log() } = $nick_list[$i]->get_name();
+    $hash{ $nick_list[$i]->get_name() } = $nick_list[$i]->get_log();
   }
    
-  foreach $key (reverse sort (keys(%hash))){
-    $string .= $hash{$key} . ' (' . $key . '), ' if $hash{$key};
+  my @keys = reverse sort { $hash{$a} <=> $hash{$b} } keys %hash; 
+
+  foreach my $key ( @keys ){
+    $string .= $key . ' (' . $hash{$key} . '), ';
   }
   
   return $string;
@@ -195,13 +197,14 @@ sub print_rage_o_meter {
   my %hash = ();
   my $key = '';
   for (my $i=0; $i < @nick_list; $i++){  
-    $hash{ $nick_list[$i]->get_rage() } = $nick_list[$i]->get_name();
+    $hash{ $nick_list[$i]->get_name() } = $nick_list[$i]->get_rage();
   }
    
-  foreach $key (reverse sort (keys(%hash))){
-    $string .= $hash{$key} . ' (' . $key . '), ' if $hash{$key};
+  my @keys = reverse sort { $hash{$a} <=> $hash{$b} } keys %hash; 
+
+  foreach my $key ( @keys ){
+    $string .= $key . ' (' . $hash{$key} . '), ';
   }
-  
   return $string;
 }
 
@@ -211,13 +214,13 @@ sub print_lol {
 
   my $string = ':# Top Lol\'ers: ';
   my %hash = ();
-  my $key = '';
   for (my $i=0; $i < @nick_list; $i++){  
-    $hash{ $nick_list[$i]->get_lol() } = $nick_list[$i]->get_name();
+    $hash{ $nick_list[$i]->get_name() } = $nick_list[$i]->get_lol();
   }
-   
-  foreach $key (reverse sort (keys(%hash))){
-    $string .= $hash{$key} . ' (' . $key . '), ' if $hash{$key};
+  my @keys = reverse sort { $hash{$a} <=> $hash{$b} } keys %hash; 
+
+  foreach my $key ( @keys ){
+    $string .= $key . ' (' . $hash{$key} . '), ';
   }
 
   return $string;
@@ -231,13 +234,14 @@ sub print_capslock {
   my %hash = ();
   my $key = '';
   for (my $i=0; $i < @nick_list; $i++){  
-    $hash{ uc $nick_list[$i]->get_capslock() } = $nick_list[$i]->get_name();
+    $hash{ uc $nick_list[$i]->get_name() } = $nick_list[$i]->get_capslock();
+  }
+  my @keys = reverse sort { $hash{$a} <=> $hash{$b} } keys %hash; 
+
+  foreach my $key ( @keys ){
+    $string .= $key . ' (' . $hash{$key} . '), ';
   }
    
-  foreach $key (reverse sort (keys(%hash))){
-    $string .= $hash{$key} . ' (' . $key . '), ' if $hash{$key};
-  }
-  
   return $string;
 }
 
@@ -249,13 +253,14 @@ sub print_interrogative {
   my %hash = ();
   my $key = '';
   for (my $i=0; $i < @nick_list; $i++){  
-    $hash{ $nick_list[$i]->get_interrogative() } = $nick_list[$i]->get_name();
+    $hash{ $nick_list[$i]->get_name() } = $nick_list[$i]->get_interrogative();
+  }
+  my @keys = reverse sort { $hash{$a} <=> $hash{$b} } keys %hash; 
+
+  foreach my $key ( @keys ){
+    $string .= $key . ' (' . $hash{$key} . '), ';
   }
    
-  foreach $key (reverse sort (keys(%hash))){
-    $string .= $hash{$key} . ' (' . $key . '), ' if $hash{$key};
-  }
-
   return $string;
 }
 

@@ -111,7 +111,7 @@ sub find_interrogative{
 sub find_lol{
   my $self = shift;
   my $msg = shift;
-  while ($msg =~ m/\slol\s/ig){
+  while ($msg =~ m/[^\!]lol/ig){
     $self->lol( $self->lol + 1 );
   }
 }
