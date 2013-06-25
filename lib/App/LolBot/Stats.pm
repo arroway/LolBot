@@ -173,7 +173,7 @@ sub print_log {
   my $string = ':#' . $self->log_lines . ' lines ';
   $string .= 'since ' . $self->date . ' ' . $self->time . ' ';
   
-  my %hash = {};
+  my %hash = ();
   my $key = '';
   for (my $i=0; $i < @nick_list; $i++){  
     $hash{ $nick_list[$i]->get_log() } = $nick_list[$i]->get_name();
@@ -192,7 +192,7 @@ sub print_rage_o_meter {
   my @nick_list = (@{$self->nick_list}); 
 
   my $string = ':# Rage-o-meter: '; 
-  my %hash = {};
+  my %hash = ();
   my $key = '';
   for (my $i=0; $i < @nick_list; $i++){  
     $hash{ $nick_list[$i]->get_rage() } = $nick_list[$i]->get_name();
@@ -210,7 +210,7 @@ sub print_lol {
   my @nick_list = (@{$self->nick_list}); 
 
   my $string = ':# Top Lol\'ers: ';
-  my %hash = {};
+  my %hash = ();
   my $key = '';
   for (my $i=0; $i < @nick_list; $i++){  
     $hash{ $nick_list[$i]->get_lol() } = $nick_list[$i]->get_name();
@@ -228,7 +228,7 @@ sub print_capslock {
   my @nick_list = (@{$self->nick_list}); 
 
   my $string = ':# TOP CAPSLOCKERS: ';
-  my %hash = {};
+  my %hash = ();
   my $key = '';
   for (my $i=0; $i < @nick_list; $i++){  
     $hash{ uc $nick_list[$i]->get_capslock() } = $nick_list[$i]->get_name();
@@ -246,7 +246,7 @@ sub print_interrogative {
   my @nick_list = (@{$self->nick_list}); 
 
   my $string = ':# Top Questions: ';
-  my %hash = {};
+  my %hash = ();
   my $key = '';
   for (my $i=0; $i < @nick_list; $i++){  
     $hash{ $nick_list[$i]->get_interrogative() } = $nick_list[$i]->get_name();
