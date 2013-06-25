@@ -113,7 +113,7 @@ sub run {
           $user_nick = $1;
         }
 
-        if ($msg =~ m/:c'est qui LolBot/) {
+        if ($msg =~ m/^:c'est qui LolBot/) {
           my $welcome = (':Bonjour, je suis un LolBot. Contrairement à ce que mon nom peut laisser penser, je ne lol pas (pas comme Fallen). !help !rtfm');
           $self->send($welcome, 'PRIVMSG');
         }
