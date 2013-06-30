@@ -124,7 +124,7 @@ sub run {
         }
 
         if ($msg =~ m/^:!rtfm$/) {
-          my $rtfm = (':THE FUCKING MANUAL: !rtfm (affiche cette aide), !rage [pseudo] (rage-o-meter), !lol (les lolers psychiatriques), !capslock (CAPSLOCK ! CAPSLOCK !), !questions (qui pose trop de questions ?)');
+          my $rtfm = (':THE FUCKING MANUAL: !rtfm (affiche cette aide), !rage [pseudo] (rage-o-meter), !lol (les lolers psychiatriques), !capslock (CAPSLOCK ! CAPSLOCK !), !questions (qui pose trop de questions ?), !facepalm');
           $self->send_notice($user_nick, $rtfm);
         }
 
@@ -143,6 +143,9 @@ sub run {
 
         my $questions = $self->stats->print_interrogative($1) if $msg =~m/^:!questions$/;
         $self->send($questions, 'PRIVMSG') if ($questions);
+        
+        my $facepalm = $self->stats->print_facepalm($1) if $msg =~m/^:!facepalm$/;
+        $self->send($facepalm, 'PRIVMSG') if ($facepalm);
 
         $self->stats->rec_stats($user_nick,$msg);
       }

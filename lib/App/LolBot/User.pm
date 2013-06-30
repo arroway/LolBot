@@ -37,6 +37,12 @@ has log => (
   default => sub {0},
 );
 
+has facepalm => (
+  isa => 'Int',
+  is => 'rw',
+  default => sub {0},
+);
+
 sub reset_all_counters{
   my $self = shift;
   if (ref($self)){
@@ -47,6 +53,7 @@ sub reset_all_counters{
     $self->rage = 0;
     $self->capslock = 0;
     $self->log = 0;
+    $self->facepalm = 0;
   }
 }
 
@@ -83,6 +90,11 @@ sub get_rage {
 sub get_log {
   my $self = shift;
   return $self->log if ref($self);
+}
+
+sub get_facepalm {
+  my $self = shift;
+  return $self->facepalm if ref($self);
 }
 
 sub find_capslock{
@@ -125,6 +137,15 @@ sub add_rage {
 sub log_user{
   my $self = shift;
   $self->log( $self->log + 1 );
+}
+
+sub find_facepalm {
+  my $self = shift;
+  my $msg = shift;
+
+  while ($msg =~ m/([^\!]facepalm|[^\!]face\spalm)/ig){
+    $self->facepalm( $self->facepalm + 1 );
+  }
 }
 
 1;

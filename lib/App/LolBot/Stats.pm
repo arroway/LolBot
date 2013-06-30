@@ -160,6 +160,7 @@ sub rec_stats{
       $nick_list[$i]->find_lol($msg);
       $nick_list[$i]->find_interrogative($msg);
       $nick_list[$i]->find_capslock($msg);
+      $nick_list[$i]->find_facepalm($msg);
       return;
      }
    }
@@ -263,5 +264,23 @@ sub print_interrogative {
   return $string;
 }
 
+sub print_facepalm {
+  my $self = shift;
+  my @nick_list = (@{$self->nick_list}); 
+
+  my $string = ':# Top Facepalms: ';
+  my %hash = ();
+  my $key = '';
+  for (my $i=0; $i < @nick_list; $i++){  
+    $hash{ $nick_list[$i]->get_name() } = $nick_list[$i]->get_facepalm();
+  }
+  my @keys = reverse sort { $hash{$a} <=> $hash{$b} } keys %hash; 
+
+  foreach my $key ( @keys ){
+    $string .= $key . ' (' . $hash{$key} . '), ';
+  }
+   
+  return $string;
+}
 
 1;
