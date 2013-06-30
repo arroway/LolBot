@@ -124,7 +124,7 @@ sub find_lol{
   my $self = shift;
   my $msg = shift;
 
-  while ($msg =~ m/[^\!]lol/ig){
+  while ($msg =~ m/[^\!]l(o)+l|[^\!]loul|[^\!]lulz/ig){
     $self->lol( $self->lol + 1 );
   }
 }
