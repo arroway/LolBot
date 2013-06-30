@@ -92,7 +92,7 @@ sub find_capslock{
   my $line = shift;
 
   #XXX: elaborate regex
-  if ($line =~ m/([0-9!\?:;,=\+\(\)\.\/\t\n\r\f])*?/ and
+  if ($line =~ m/([0-9!\?:;,=\+\(\)\[\]\.\/\t\n\r\f])*?/ and
       $line =~ m/[A-Z]+?/ and
       not $line =~ m/[a-z]+?/){
     $self->capslock( $self->capslock + 1 );
@@ -111,6 +111,7 @@ sub find_interrogative{
 sub find_lol{
   my $self = shift;
   my $msg = shift;
+
   while ($msg =~ m/[^\!]lol/ig){
     $self->lol( $self->lol + 1 );
   }

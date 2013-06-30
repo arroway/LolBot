@@ -109,7 +109,7 @@ sub run {
         
         my  $msg = $args[1];
         my $user_nick = "";
-        if ($prefix =~ m/:(\w+)!/){
+        if ($prefix =~ m/:([a-zA-Z0-9%~\[\]\(\).<>&@_-\:+]+)!/){
           $user_nick = $1;
         }
 
