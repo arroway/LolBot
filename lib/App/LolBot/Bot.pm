@@ -125,7 +125,7 @@ sub run {
 
         if ($msg =~ m/^:!rtfm$/) {
           my $rtfm = (':THE FUCKING MANUAL: !rtfm (affiche cette aide), !rage [pseudo] (rage-o-meter), !lol (les lolers psychiatriques), !capslock (CAPSLOCK ! CAPSLOCK !), !questions (qui pose trop de questions ?)');
-          $self->send($rtfm, 'NOTICE');
+          $self->send_notice($user_nick, $rtfm);
         }
 
         $self->stats->rage_o_meter($1) if $msg =~m/^:!rage\s(\w+)$/;
@@ -156,6 +156,14 @@ sub send {
 
   my @args = ($self->chan, $output);
   $self->server->send($cmd, @args);
+}
+
+sub send_notice {
+  my $self = shift;
+  my ($nick, $output) = @_;
+
+  my @args = ($nick, $output);
+  $self->server->send('NOTICE', @args);
 }
 
 1;
