@@ -12,12 +12,19 @@ This is a custom IRC bot.
 ## Commands
 
 `!log`: number of lines written on the channel since the bot connected, and number of lines per user
+
 `!lol`: number of lol/loul/etc score per user 
+
 `!rage [user]`: command performed by any user of the chan to notify the bot that 'user' complained
+
 `!rage`: displays the results of the previous commands
+
 `!facepalm`: number of facepalm or 'face palm' per user
+
 `!capslock`: number of lines written in capital letters per user
+
 `!questions`: number of questions (question marks) per user
+
 `!help` or `!rtfm`: quick online help for commands
 
 
