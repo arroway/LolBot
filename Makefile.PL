@@ -5,7 +5,7 @@ license('Perl licence');
 version_from('lib/App/LolBot.pm');
 
 requires('Any::Moose');
-requires('MooseX::Singleton');
+#requires('MooseX::Singleton');
 
 tests("t/*.t");
 #extra_tests;
