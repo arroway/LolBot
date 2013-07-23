@@ -128,7 +128,7 @@ sub run {
           $self->send_notice($user_nick, $rtfm);
         }
 
-        $self->stats->rage_o_meter($1) if $msg =~m/^:!rage\s(\w+)$/;
+        $self->stats->rage_o_meter($1) if $msg =~m/^:!rage\s([a-zA-Z0-9%~\[\]\(\).<>&@_-\:+]+)$/;
         my $rage = $self->stats->print_rage_o_meter($1) if $msg =~m/^:!rage$/;
         $self->send($rage, 'PRIVMSG') if ($rage);
         
