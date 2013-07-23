@@ -79,20 +79,6 @@ has rage => (
   default => sub {0},
 );
 
-sub reset_all_counters{
-  my $self = shift;
-  if (ref($self)){
-    $self->capslock = 0;
-    $self->exclamative = 0;
-    $self->interrogative = 0;
-    $self->lol = 0;
-    $self->rage = 0;
-    $self->capslock = 0;
-    $self->log = 0;
-    $self->facepalm = 0;
-  }
-}
-
 sub find_capslock{
   
   #in argument: what has just said the user
