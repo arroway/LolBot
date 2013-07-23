@@ -83,6 +83,8 @@ sub add_nick{
         $amazed,
         $confused,
         $fpga,
+        $win,
+        $demoralized,
         $rage
         ) = App::LolBot::Database->select_user($new_nick);
 
@@ -97,6 +99,8 @@ sub add_nick{
     $nick_obj->amazed($amazed) if $amazed;
     $nick_obj->confused($confused) if $confused;
     $nick_obj->fpga($fpga) if $fpga; 
+    $nick_obj->win($win) if $win; 
+    $nick_obj->demoralized($demoralized) if $demoralized; 
     $nick_obj->rage($rage) if $rage; 
   }
 }
@@ -178,11 +182,19 @@ sub rec_stats{
   for (my $i=0; $i< @nick_list; $i++){  
     if ($user_nick eq $nick_list[$i]->name){
  
-      $nick_list[$i]->log_user();
-      $nick_list[$i]->find_lol($msg);
-      $nick_list[$i]->find_interrogative($msg);
       $nick_list[$i]->find_capslock($msg);
       $nick_list[$i]->find_facepalm($msg);
+      $nick_list[$i]->find_interrogative($msg);
+      $nick_list[$i]->find_lol($msg);
+      $nick_list[$i]->log_user();
+      $nick_list[$i]->find_osef($msg);
+      $nick_list[$i]->find_sad($msg);
+      $nick_list[$i]->find_happy($msg);
+      $nick_list[$i]->find_amazed($msg);
+      $nick_list[$i]->find_confused($msg);
+      $nick_list[$i]->find_fpga($msg);
+      $nick_list[$i]->find_win($msg);
+      $nick_list[$i]->find_demoralized($msg);
   
       $self->load_data($nick_list[$i]);
       return;

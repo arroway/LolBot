@@ -15,25 +15,27 @@ has db => (
     my $self = shift;
     my @args = ("dbi:SQLite::data.db", {RaiseError => 1, AutoCommit => 0});
     my $db = DBI->connect(@args);
-#    $db->do("CREATE TABLE nicknames (name     VARCHAR(50) PRIMARY KEY,
-#                                   capslock       INTEGER,
-#                                   facepalm       INTEGER,
-#                                   interrogative  INTEGER,
-#                                   lol            INTEGER,
-#                                   log            INTEGER,
-#		                   osef           INTEGER,
-#                                   sad            INTEGER,
-#                                   happy          INTEGER,
-#                                   amazed         INTEGER,
-#                                   confused       INTEGER,
-#                                   fpga           INTEGER,
-#                                   rage           INTEGER  
-#                                   )");
-#    $db->do("CREATE TABLE lolbot (id          INTEGER PRIMARY KEY,
-#                                  lines       INTEGER,
-#				  random      VARCHAR(255)
-#                                  )");
-#    $db->do("INSERT INTO lolbot VALUES (1, 0, \"\")");
+    $db->do("CREATE TABLE nicknames (name     VARCHAR(50) PRIMARY KEY,
+                                   capslock       INTEGER,
+                                   facepalm       INTEGER,
+                                   interrogative  INTEGER,
+                                   lol            INTEGER,
+                                   log            INTEGER,
+		                   osef           INTEGER,
+                                   sad            INTEGER,
+                                   happy          INTEGER,
+                                   amazed         INTEGER,
+                                   confused       INTEGER,
+                                   fpga           INTEGER,
+                                   win            INTEGER,
+                                   demoralized    INTEGER,
+                                   rage           INTEGER  
+                                   )");
+    $db->do("CREATE TABLE lolbot (id          INTEGER PRIMARY KEY,
+                                  lines       INTEGER,
+				  random      VARCHAR(255)
+                                  )");
+    $db->do("INSERT INTO lolbot VALUES (1, 0, \"\")");
     return $db;
   }
 );
@@ -67,7 +69,7 @@ sub select_user {
     $self->db->rollback();
   }
 
-  my ($name,
+  my ($rname,
       $capslock,
       $facepalm,
       $interrogative,
@@ -79,6 +81,8 @@ sub select_user {
       $amazed,
       $confused,
       $fpga,
+      $win,
+      $demoralized,
       $rage) = $sth->fetchrow();
 
   $sth->finish();
@@ -94,6 +98,8 @@ sub select_user {
       $amazed,
       $confused,
       $fpga,
+      $win,
+      $demoralized,
       $rage);
 }
 
@@ -108,7 +114,7 @@ sub create_user {
     return;
   }
 
-  my $query = qq {INSERT INTO nicknames VALUES ( ? , NOT NULL, NOT NULL, NOT NULL, NOT NULL, NOT NULL, NOT NULL, NOT NULL, NOT NULL, NOT NULL, NOT NULL, NOT NULL, NOT NULL)};
+  my $query = qq {INSERT INTO nicknames VALUES ( ? , NOT NULL, NOT NULL, NOT NULL, NOT NULL, NOT NULL, NOT NULL, NOT NULL, NOT NULL, NOT NULL, NOT NULL, NOT NULL, NOT NULL, NOT NULL, NOT NULL)};
 
   my $sth = $self->db->prepare($query);
 
@@ -141,6 +147,8 @@ sub update_user {
                                        amazed = ?,
                                        confused = ?,
                                        fpga = ?,
+                                       win = ?,
+                                       demoralized = ?,
                                        rage = ? 
                    WHERE name = ?};
   my $sth = $self->db->prepare($query);
@@ -157,8 +165,10 @@ sub update_user {
     $sth->bind_param(9, $user->amazed, SQL_INTEGER);
     $sth->bind_param(10, $user->confused, SQL_INTEGER);
     $sth->bind_param(11, $user->fpga, SQL_INTEGER);
-    $sth->bind_param(12, $user->rage, SQL_INTEGER);
-    $sth->bind_param(13, $user->name, SQL_VARCHAR);
+    $sth->bind_param(12, $user->win, SQL_INTEGER);
+    $sth->bind_param(13, $user->demoralized, SQL_INTEGER);
+    $sth->bind_param(14, $user->rage, SQL_INTEGER);
+    $sth->bind_param(15, $user->name, SQL_VARCHAR);
     $sth->execute();
     $sth->commit();
   };
