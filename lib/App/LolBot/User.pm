@@ -7,6 +7,18 @@ has name => (
   is => 'rw',
 );
 
+has capslock => (
+  isa => 'Int',
+  is => 'rw',
+  default => sub {0},
+);
+
+has facepalm => (
+  isa => 'Int',
+  is => 'rw',
+  default => sub {0},
+);
+
 has interrogative => (
   isa => 'Int',
   is => 'rw',
@@ -19,25 +31,49 @@ has lol => (
   default => sub {0},
 );
 
-has rage => (
-  isa => 'Int',
-  is => 'rw',
-  default => sub {0},
-);
-
-has capslock => (
-  isa => 'Int',
-  is => 'rw',
-  default => sub {0},
-);
-
 has log => (
   isa => 'Int',
   is => 'rw',
   default => sub {0},
 );
 
-has facepalm => (
+has osef => (
+  isa => 'Int',
+  is => 'rw',
+  default => sub {0},
+); 
+
+has sad => (
+  isa => 'Int',
+  is => 'rw',
+  default => sub {0},
+);
+
+has happy => (
+  isa => 'Int',
+  is => 'rw',
+  default => sub {0},
+);
+
+has amazed => (
+  isa => 'Int',
+  is => 'rw',
+  default => sub {0},
+);
+
+has confused => (
+  isa => 'Int',
+  is => 'rw',
+  default => sub {0},
+);
+
+has fpga => (
+  isa => 'Int',
+  is => 'rw',
+  default => sub {0},
+);
+
+has rage => (
   isa => 'Int',
   is => 'rw',
   default => sub {0},

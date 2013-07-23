@@ -2,10 +2,16 @@ package App::LolBot::Stats;
 
 use Any::Moose;
 use App::LolBot::User;
+use App::LolBot::Database;
 use POSIX qw(strftime);
 
 use constant FALSE => 0;
 use constant TRUE => 1;
+
+has db => (
+  isa => 'App::LolBot::Database',
+  is => 'rw',
+);
 
 has log_lines => (
   isa => 'Int',
@@ -57,6 +63,7 @@ sub add_nick{
     );
 
     push((@{$self->nick_list}), $new_nick_object);
+    App::LolBot::Database->insert($new_nick);
   }
 }
 
@@ -142,9 +149,29 @@ sub rec_stats{
       $nick_list[$i]->find_interrogative($msg);
       $nick_list[$i]->find_capslock($msg);
       $nick_list[$i]->find_facepalm($msg);
+      $self->load_data($nick_list[$i]);
       return;
      }
    }
+}
+
+sub load_data {
+  my $self = shift;
+  my $user = shift;
+
+  App::LolBot::Database->update($user->name, "capslock", $user->capslock);
+  App::LolBot::Database->update($user->name, "facepalm", $user->facepalm);
+  App::LolBot::Database->update($user->name, "interrogative", $user->interrogative);
+  App::LolBot::Database->update($user->name, "lol", $user->lol);
+  App::LolBot::Database->update($user->name, "log", $user->log);
+  App::LolBot::Database->update($user->name, "osef", $user->osef);
+  App::LolBot::Database->update($user->name, "sad", $user->sad);
+  App::LolBot::Database->update($user->name, "happy", $user->happy);
+  App::LolBot::Database->update($user->name, "amazed", $user->amazed);
+  App::LolBot::Database->update($user->name, "confused", $user->confused);
+  App::LolBot::Database->update($user->name, "fpga", $user->fpga);
+  App::LolBot::Database->update($user->name, "rage", $user->rage);
+  return;
 }
 
 sub print_log {

@@ -4,6 +4,7 @@ MANIFEST
 README
 lib/App/LolBot.pm
 lib/App/LolBot/Bot.pm
+lib/App/LolBot/Database.pm
 lib/App/LolBot/Stats.pm
 lib/App/LolBot/User.pm
 
