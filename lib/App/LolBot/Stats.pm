@@ -28,10 +28,6 @@ has time => (
   is => 'rw',
 );
 
-sub get_log_lines{
-  my $self = shift;
-  return $self->log_lines if ref($self);
-}
 
 sub get_nick_list{
   my $self = shift;
@@ -42,21 +38,6 @@ sub get_nick_list{
     }
     return $string;
   }
-}
-
-sub get_date{
-  my $self = shift;
-  return $self->date if ref($self);
-}
-
-sub get_time{
-  my $self = shift;
-  return $self->time if ref($self);
-}
-
-sub log(){
-  my $self = shift;
-  $self->log_lines( $self->log_lines + 1 );
 }
 
 sub add_nick{
@@ -176,7 +157,7 @@ sub print_log {
   my %hash = ();
   my $key = '';
   for (my $i=0; $i < @nick_list; $i++){  
-    $hash{ $nick_list[$i]->get_name() } = $nick_list[$i]->get_log();
+    $hash{ $nick_list[$i]->name() } = $nick_list[$i]->log();
   }
    
   my @keys = reverse sort { $hash{$a} <=> $hash{$b} } keys %hash; 
@@ -197,7 +178,7 @@ sub print_rage_o_meter {
   my %hash = ();
   my $key = '';
   for (my $i=0; $i < @nick_list; $i++){  
-    $hash{ $nick_list[$i]->get_name() } = $nick_list[$i]->get_rage();
+    $hash{ $nick_list[$i]->name() } = $nick_list[$i]->rage();
   }
    
   my @keys = reverse sort { $hash{$a} <=> $hash{$b} } keys %hash; 
@@ -215,7 +196,7 @@ sub print_lol {
   my $string = ':# Top Lol\'ers: ';
   my %hash = ();
   for (my $i=0; $i < @nick_list; $i++){  
-    $hash{ $nick_list[$i]->get_name() } = $nick_list[$i]->get_lol();
+    $hash{ $nick_list[$i]->name() } = $nick_list[$i]->lol();
   }
   my @keys = reverse sort { $hash{$a} <=> $hash{$b} } keys %hash; 
 
@@ -234,7 +215,7 @@ sub print_capslock {
   my %hash = ();
   my $key = '';
   for (my $i=0; $i < @nick_list; $i++){  
-    $hash{ uc $nick_list[$i]->get_name() } = $nick_list[$i]->get_capslock();
+    $hash{ uc $nick_list[$i]->name() } = $nick_list[$i]->capslock();
   }
   my @keys = reverse sort { $hash{$a} <=> $hash{$b} } keys %hash; 
 
@@ -253,7 +234,7 @@ sub print_interrogative {
   my %hash = ();
   my $key = '';
   for (my $i=0; $i < @nick_list; $i++){  
-    $hash{ $nick_list[$i]->get_name() } = $nick_list[$i]->get_interrogative();
+    $hash{ $nick_list[$i]->name() } = $nick_list[$i]->interrogative();
   }
   my @keys = reverse sort { $hash{$a} <=> $hash{$b} } keys %hash; 
 
@@ -272,7 +253,7 @@ sub print_facepalm {
   my %hash = ();
   my $key = '';
   for (my $i=0; $i < @nick_list; $i++){  
-    $hash{ $nick_list[$i]->get_name() } = $nick_list[$i]->get_facepalm();
+    $hash{ $nick_list[$i]->name() } = $nick_list[$i]->facepalm();
   }
   my @keys = reverse sort { $hash{$a} <=> $hash{$b} } keys %hash; 
 

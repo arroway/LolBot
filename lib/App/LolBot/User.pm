@@ -57,46 +57,6 @@ sub reset_all_counters{
   }
 }
 
-sub get_name{
-  my $self = shift;
-  return $self->name if ref($self);
-}
-
-sub get_capslock{
-  my $self = shift;
-  return $self->capslock if ref($self);
-}
-
-sub get_exclamative{
-  my $self = shift;
-  return $self->exclamative if ref($self);
-}
-
-sub get_interrogative{
-  my $self = shift;
-  return $self->interrogative if ref($self);
-}
-
-sub get_lol{
-  my $self = shift;
-  return $self->lol if ref($self);
-}
-
-sub get_rage {
-  my $self = shift;
-  return $self->rage if ref($self);
-}
-
-sub get_log {
-  my $self = shift;
-  return $self->log if ref($self);
-}
-
-sub get_facepalm {
-  my $self = shift;
-  return $self->facepalm if ref($self);
-}
-
 sub find_capslock{
   
   #in argument: what has just said the user
