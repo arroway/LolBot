@@ -3,6 +3,7 @@ package App::LolBot::Stats;
 use Any::Moose;
 use App::LolBot::User;
 use App::LolBot::Database;
+use DBI;
 use POSIX qw(strftime);
 
 use constant FALSE => 0;
@@ -61,13 +62,42 @@ sub add_nick{
   }
 
   if ($present == FALSE){
-    my $new_nick_object = 
+    my $nick_obj = 
       App::LolBot::User->new( 
         name => $new_nick,
     );
 
-    push((@{$self->nick_list}), $new_nick_object);
-    App::LolBot::Database->insert($new_nick);
+    push((@{$self->nick_list}), $nick_obj);
+
+    App::LolBot::Database->create_user($new_nick);
+    
+    # Initialize $new_nick_object attributes
+    my ($capslock,
+        $facepalm,
+        $interrogative,
+        $lol,
+        $log,
+        $osef,
+        $sad,
+        $happy,
+        $amazed,
+        $confused,
+        $fpga,
+        $rage
+        ) = App::LolBot::Database->select_user($new_nick);
+
+    $nick_obj->capslock($capslock) if $capslock;
+    $nick_obj->facepalm($facepalm) if $facepalm;
+    $nick_obj->interrogative($interrogative) if $interrogative;
+    $nick_obj->lol($lol) if $lol;
+    $nick_obj->log($log) if $log;
+    $nick_obj->osef($osef) if $osef;
+    $nick_obj->sad($sad) if $sad;
+    $nick_obj->happy($happy) if $happy;
+    $nick_obj->amazed($amazed) if $amazed;
+    $nick_obj->confused($confused) if $confused;
+    $nick_obj->fpga($fpga) if $fpga; 
+    $nick_obj->rage($rage) if $rage; 
   }
 }
 
@@ -164,21 +194,10 @@ sub load_data {
   my $self = shift;
   my $user = shift;
 
-  App::LolBot::Database->update($user->name, "capslock", $user->capslock);
-  App::LolBot::Database->update($user->name, "facepalm", $user->facepalm);
-  App::LolBot::Database->update($user->name, "interrogative", $user->interrogative);
-  App::LolBot::Database->update($user->name, "lol", $user->lol);
-  App::LolBot::Database->update($user->name, "log", $user->log);
-  App::LolBot::Database->update($user->name, "osef", $user->osef);
-  App::LolBot::Database->update($user->name, "sad", $user->sad);
-  App::LolBot::Database->update($user->name, "happy", $user->happy);
-  App::LolBot::Database->update($user->name, "amazed", $user->amazed);
-  App::LolBot::Database->update($user->name, "confused", $user->confused);
-  App::LolBot::Database->update($user->name, "fpga", $user->fpga);
-  App::LolBot::Database->update($user->name, "rage", $user->rage);
-  
-  App::LolBot::Database->bot_update("lines", $self->log_lines);
+  App::LolBot::Database->update_user($user);
+  App::LolBot::Database->update_bot($self->log_lines);
   return;
+
 }
 
 sub print_log {

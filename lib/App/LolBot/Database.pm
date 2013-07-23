@@ -1,8 +1,11 @@
 package App::LolBot::Database;
+
+use strict;
 use Moose;
 use MooseX::Singleton;
-use DBI;                                                                      
-use base qw(DBI);
+use DBI;
+use DBI qw(:sql_types);
+#use base qw(DBI);
 
 # The Database module is a singleton
 has db => (
@@ -10,27 +13,27 @@ has db => (
   is => 'rw',
   default => sub {
     my $self = shift;
-    my @args = ("dbi:SQLite::data.db", {AutoCommit => 1, RaiseError => 0});
+    my @args = ("dbi:SQLite::data.db", {RaiseError => 1, AutoCommit => 0});
     my $db = DBI->connect(@args);
-    $db->do("CREATE TABLE nicknames (name     VARCHAR(50) PRIMARY KEY,
-                                   capslock       INTEGER,
-                                   facepalm       INTEGER,
-                                   interrogative  INTEGER,
-                                   lol            INTEGER,
-                                   log            INTEGER,
-		                   osef           INTEGER,
-                                   sad            INTEGER,
-                                   happy          INTEGER,
-                                   amazed         INTEGER,
-                                   confused       INTEGER,
-                                   fpga           INTEGER,
-                                   rage           INTEGER  
-                                   )");
-    $db->do("CREATE TABLE lolbot (id          INTEGER PRIMARY KEY,
-                                  lines       INTEGER,
-				  random      VARCHAR(255)
-                                  )");
-    $db->do("INSERT INTO lolbot VALUES (1, 0, \"\")");
+#    $db->do("CREATE TABLE nicknames (name     VARCHAR(50) PRIMARY KEY,
+#                                   capslock       INTEGER,
+#                                   facepalm       INTEGER,
+#                                   interrogative  INTEGER,
+#                                   lol            INTEGER,
+#                                   log            INTEGER,
+#		                   osef           INTEGER,
+#                                   sad            INTEGER,
+#                                   happy          INTEGER,
+#                                   amazed         INTEGER,
+#                                   confused       INTEGER,
+#                                   fpga           INTEGER,
+#                                   rage           INTEGER  
+#                                   )");
+#    $db->do("CREATE TABLE lolbot (id          INTEGER PRIMARY KEY,
+#                                  lines       INTEGER,
+#				  random      VARCHAR(255)
+#                                  )");
+#    $db->do("INSERT INTO lolbot VALUES (1, 0, \"\")");
     return $db;
   }
 );
@@ -47,26 +50,148 @@ sub commit {
   $self->db->commit();
 }
 
-sub insert {
+sub select_user {
   my $self = shift;
-  my ($name) = @_;
-  my $query = "INSERT INTO nicknames VALUES (\"$name\", NOT NULL, NOT NULL, NOT NULL, NOT NULL, NOT NULL, NOT NULL, NOT NULL, NOT NULL, NOT NULL, NOT NULL, NOT NULL, NOT NULL)";
-  $self->db->do($query);
+  my $name = shift;
+
+  my $sth = $self->db->prepare("SELECT * FROM nicknames WHERE name = ?");
+
+  eval {
+    $sth->bind_param(1, $name, SQL_VARCHAR);
+    $sth->execute();
+    $sth->commit(); 
+  };
+
+  if ($@) {
+    warn "Database error: $DBI::errstr\n" if $DBI::errstr;
+    $self->db->rollback();
+  }
+
+  my ($name,
+      $capslock,
+      $facepalm,
+      $interrogative,
+      $lol,
+      $log,
+      $osef,
+      $sad,
+      $happy,
+      $amazed,
+      $confused,
+      $fpga,
+      $rage) = $sth->fetchrow();
+
+  $sth->finish();
+
+  return ($capslock,
+      $facepalm,
+      $interrogative,
+      $lol,
+      $log,
+      $osef,
+      $sad,
+      $happy,
+      $amazed,
+      $confused,
+      $fpga,
+      $rage);
 }
 
-sub update {
+sub create_user {
   my $self = shift;
-  my ($userNick, $attribute, $value) = @_;
-  my $query = "UPDATE nicknames SET \"$attribute\"  = \"$value\"  WHERE name = \"$userNick\"";
-  $self->db->do($query);
+  my $name = shift;
+  
+
+  my $res = $self->select_user($name);
+  if ($res) {
+    warn "User $res already exists: abort creation\n";
+    return;
+  }
+
+  my $query = qq {INSERT INTO nicknames VALUES ( ? , NOT NULL, NOT NULL, NOT NULL, NOT NULL, NOT NULL, NOT NULL, NOT NULL, NOT NULL, NOT NULL, NOT NULL, NOT NULL, NOT NULL)};
+
+  my $sth = $self->db->prepare($query);
+
+  eval {
+    $sth->bind_param(1, $name, SQL_VARCHAR);
+    $sth->execute();
+    $sth->commit();
+  };
+
+  if ($@) {
+    warn "Database error: $DBI::errstr\n" if $DBI::errstr;
+    $self->db->rollback();
+  }
+ 
+  $sth->finish();
 }
 
-sub bot_update {
+sub update_user {
   my $self = shift;
-  my ($attribute, $value) = @_;
-  my $query = "UPDATE lolbot SET \"$attribute\"  = \"$value\"  WHERE id = 1";
-  $self->db->do($query);
+  my $user = shift;
+
+  my $query = qq{ UPDATE nicknames SET capslock = ?, 
+                                       facepalm = ?,
+                                       interrogative = ?,
+                                       lol = ?,
+                                       log = ?,
+                                       osef = ?,
+                                       sad = ?,
+                                       happy = ?,
+                                       amazed = ?,
+                                       confused = ?,
+                                       fpga = ?,
+                                       rage = ? 
+                   WHERE name = ?};
+  my $sth = $self->db->prepare($query);
+
+  eval {
+    $sth->bind_param(1, $user->capslock, SQL_INTEGER);
+    $sth->bind_param(2, $user->facepalm, SQL_INTEGER);
+    $sth->bind_param(3, $user->interrogative, SQL_INTEGER);
+    $sth->bind_param(4, $user->lol, SQL_INTEGER);
+    $sth->bind_param(5, $user->log, SQL_INTEGER);
+    $sth->bind_param(6, $user->osef, SQL_INTEGER);
+    $sth->bind_param(7, $user->sad, SQL_INTEGER);
+    $sth->bind_param(8, $user->happy, SQL_INTEGER);
+    $sth->bind_param(9, $user->amazed, SQL_INTEGER);
+    $sth->bind_param(10, $user->confused, SQL_INTEGER);
+    $sth->bind_param(11, $user->fpga, SQL_INTEGER);
+    $sth->bind_param(12, $user->rage, SQL_INTEGER);
+    $sth->bind_param(13, $user->name, SQL_VARCHAR);
+    $sth->execute();
+    $sth->commit();
+  };
+
+  if ($@) {
+    warn "Database error: $DBI::errstr\n" if $DBI::errstr;
+    $self->db->rollback();
+  }
+ 
+  $sth->finish();
+}
+
+sub update_bot {
+  my $self = shift;
+  my $lines = shift;
+  
+  my $query = qq{ UPDATE lolbot SET lines = ? };
+  my $sth = $self->db->prepare($query);
+
+  eval {
+    $sth->bind_param(1, $lines, SQL_INTEGER);
+    $sth->execute();
+    $sth->commit();
+  };
+
+  if ($@) {
+    warn "Database error: $DBI::errstr\n" if $DBI::errstr;
+    $self->db->rollback();
+  }
+ 
+  $sth->finish();
 } 
+
 
 sub disconnect {
 
