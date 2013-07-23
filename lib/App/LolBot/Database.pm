@@ -26,6 +26,11 @@ has db => (
                                    fpga           INTEGER,
                                    rage           INTEGER  
                                    )");
+    $db->do("CREATE TABLE lolbot (id          INTEGER PRIMARY KEY,
+                                  lines       INTEGER,
+				  random      VARCHAR(255)
+                                  )");
+    $db->do("INSERT INTO lolbot VALUES (1, 0, \"\")");
     return $db;
   }
 );
@@ -55,6 +60,13 @@ sub update {
   my $query = "UPDATE nicknames SET \"$attribute\"  = \"$value\"  WHERE name = \"$userNick\"";
   $self->db->do($query);
 }
+
+sub bot_update {
+  my $self = shift;
+  my ($attribute, $value) = @_;
+  my $query = "UPDATE lolbot SET \"$attribute\"  = \"$value\"  WHERE id = 1";
+  $self->db->do($query);
+} 
 
 sub disconnect {
 

@@ -171,6 +171,8 @@ sub load_data {
   App::LolBot::Database->update($user->name, "confused", $user->confused);
   App::LolBot::Database->update($user->name, "fpga", $user->fpga);
   App::LolBot::Database->update($user->name, "rage", $user->rage);
+  
+  App::LolBot::Database->bot_update("lines", $self->log_lines);
   return;
 }
 
