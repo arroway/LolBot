@@ -34,6 +34,10 @@ has time => (
   is => 'rw',
 );
 
+sub log(){
+  my $self = shift;
+  $self->log_lines( $self->log_lines + 1 );
+}
 
 sub get_nick_list{
   my $self = shift;
@@ -149,6 +153,7 @@ sub rec_stats{
       $nick_list[$i]->find_interrogative($msg);
       $nick_list[$i]->find_capslock($msg);
       $nick_list[$i]->find_facepalm($msg);
+  
       $self->load_data($nick_list[$i]);
       return;
      }
