@@ -96,12 +96,19 @@ sub run {
 
       #Answer to the ping of the server to stay connected
       $self->server->send("PONG", ($args[@args-1])) if ($cmd eq "PING");
-    
+
       #Deal with new nicknames 
       $self->stats->init_nick_list(@args) if ($cmd eq "353");
       $self->stats->new_join($prefix) if ($cmd eq "JOIN");
       $self->stats->change_nick($args[1]) if ($cmd eq "NICK");
 
+      if (strftime("%H:%M:%S", localtime()) eq "13:37:00"){
+        $self->send(':LEEEEEET', 'PRIVMSG');
+      }
+
+      if ($self->stats->log_lines % 666 == 0 and $self->stats->log_lines > 0) {
+        $self->send(':You\'re so evil!', 'PRIVMSG');
+      }
 
       if ($cmd eq "PRIVMSG"){
      
