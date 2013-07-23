@@ -111,7 +111,7 @@ sub find_interrogative{
   my $self = shift;
   my $line = shift;
   #XXX
-  if ($line =~ m/\?/g ){
+  while ($line =~ m/\?/g ){
     $self->interrogative( $self->interrogative + 1 );
   }  
 }
