@@ -104,6 +104,7 @@ sub run {
 
       if (strftime("%H:%M:%S", localtime()) eq "13:37:00"){
         $self->send(':LEEEEEET', 'PRIVMSG');
+        select(undef, undef, undef, 1);
       }
 
       if ($self->stats->log_lines % 666 == 0 and $self->stats->log_lines > 0) {
