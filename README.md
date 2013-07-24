@@ -30,7 +30,7 @@ This is a custom IRC bot.
 
 ## Web interface
 
-More data can be displayed via the [mojobot][MojoBot] web interface:
+More data can be displayed via the [MojoBot][MojoBot] web interface:
 * smileys (happy, sad, amazed, confused, demoralized)
 * number of 'fpga' and 'arduilol'
 * facepalm
@@ -70,4 +70,4 @@ This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself, either Perl version 5.12.3 or,
 at your option, any later version of Perl 5 you may have available.
 
-[mojobot]: https://github.com/arroway/LolBot
+[MojoBot]: https://github.com/arroway/MojoBot
