@@ -1,4 +1,4 @@
-# App::LolBot 
+# App::LolBot v0.02 
 
 This is a custom IRC bot. 
 
@@ -9,7 +9,7 @@ This is a custom IRC bot.
 * The bot detects capslock. 
 
 
-## Commands
+## IRC Commands
 
 `!log`: number of lines written on the channel since the bot connected, and number of lines per user
 
@@ -26,6 +26,15 @@ This is a custom IRC bot.
 `!questions`: number of questions (question marks) per user
 
 `!help` or `!rtfm`: quick online help for commands
+
+
+## Web interface
+
+More data can be displayed via the [mojobot][MojoBot] web interface:
+* smileys (happy, sad, amazed, confused, demoralized)
+* number of 'fpga' and 'arduilol'
+* facepalm
+* osef
 
 
 ## Installation
@@ -50,7 +59,7 @@ perldoc to come...
 
 ## Roadmap
 
-The next version 0.02 of the LolBot will include persistance of the counters values in order to display the result on a web interface.
+Next version 0.03... more features?
 
 
 ## Copyright
@@ -61,4 +70,4 @@ This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself, either Perl version 5.12.3 or,
 at your option, any later version of Perl 5 you may have available.
 
-
+[mojobot]: https://github.com/arroway/LolBot
