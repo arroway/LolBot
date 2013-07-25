@@ -37,6 +37,11 @@ has stats => (
   is => 'rw',
 );
 
+has lines => (
+  isa => 'Int',
+  is => 'rw',
+  default => sub {0}
+);
 
 #Connection to a IRC Server
 sub connect {
@@ -109,8 +114,9 @@ sub run {
         select(undef, undef, undef, 1);
       }
 
-      if ($self->stats->log_lines % 666 == 0 and $self->stats->log_lines > 0) {
+      if ($self->stats->log_lines % 666 == 0 and $self->stats->log_lines != $lines) {
         $self->send(':You\'re so evil!', 'PRIVMSG');
+        $lines = $self->stats->log_lines;
       }
 
       if ($cmd eq "PRIVMSG"){
