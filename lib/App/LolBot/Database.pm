@@ -170,6 +170,26 @@ sub update_user {
   $sth->finish();
 }
 
+sub select_lines {
+  my $self = shift;
+  
+  my $query = qq{ SELECT lines FROM lolbot WHERE id = 1 };
+  my $sth = $self->db->prepare($query);
+
+  eval {
+    $sth->execute();
+    $sth->commit();
+  };
+
+  if ($@) {
+    warn "Database error: $DBI::errstr\n" if $DBI::errstr;
+    $self->db->rollback();
+  }
+ 
+  $sth->finish();
+
+}
+
 sub update_bot {
   my $self = shift;
   my $lines = shift;

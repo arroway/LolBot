@@ -19,6 +19,10 @@ has db => (
 has log_lines => (
   isa => 'Int',
   is => 'rw',
+  default => sub {
+    my ($lines) = App::LolBot::Database->select_lines();
+    return $lines;
+  }
 );
 
 has nick_list => (
