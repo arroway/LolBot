@@ -47,7 +47,7 @@ To install this module:
 ~~~ sh
    perl Makefile.PL
    make
-   make test (does nothing because of deprecated tests, baaad)
+   make test 
    make install
 ~~~ 
 
