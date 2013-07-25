@@ -150,7 +150,7 @@ sub find_sad {
   my $self = shift;
   my $msg = shift;
 
-  if ($msg =~ m/:'?(\(|\/)/) {
+  while ($msg =~ m/:'?(\(|\/)/g) {
     $self->sad ($self->sad + 1);
   }
 }
