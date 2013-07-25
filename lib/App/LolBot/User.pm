@@ -177,7 +177,7 @@ sub find_confused {
   my $self = shift;
   my $msg = shift;
 
-  if ($msg =~ m/:(x|X)/) {
+  while ($msg =~ m/:(x|X)/g) {
     $self->confused ($self->confused + 1);
   }
 }
