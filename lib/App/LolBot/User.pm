@@ -159,7 +159,7 @@ sub find_happy {
   my $self = shift;
   my $msg = shift;
 
-  if ($msg =~ m/:'?(\)|D)|\^_+\^/) {
+  while ($msg =~ m/:'?(\)|D)|\^_?\^/g) {
     $self->happy ($self->happy + 1);
   }
 }
