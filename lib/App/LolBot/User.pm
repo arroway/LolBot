@@ -204,7 +204,7 @@ sub find_demoralized {
   my $self = shift;
   my $msg = shift;
 
-  if ($msg =~ m/-_-/) {
+  while ($msg =~ m/-_-/g) {
     $self->demoralized ($self->demoralized + 1);
   }
 }
