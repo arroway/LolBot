@@ -114,9 +114,9 @@ sub run {
         select(undef, undef, undef, 1);
       }
 
-      if ($self->stats->log_lines % 666 == 0 and $self->stats->log_lines != $lines) {
+      if ($self->stats->log_lines % 666 == 0 and $self->stats->log_lines != $self->lines) {
         $self->send(':You\'re so evil!', 'PRIVMSG');
-        $lines = $self->stats->log_lines;
+        $self->lines( $self->stats->log_lines );
       }
 
       if ($cmd eq "PRIVMSG"){
