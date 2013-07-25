@@ -1,5 +1,7 @@
 package App::LolBot::Stats;
 
+use strict;
+use warnings;
 use Any::Moose;
 use App::LolBot::User;
 use App::LolBot::Database;

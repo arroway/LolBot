@@ -1,6 +1,7 @@
 package App::LolBot::Database;
 
 use strict;
+use warnings;
 use Moose;
 use MooseX::Singleton;
 use DBI;

@@ -1,5 +1,7 @@
 package App::LolBot::Server;
 
+use strict;
+use warnings;
 use Any::Moose;
 use IO::Socket;
 

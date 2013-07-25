@@ -1,5 +1,7 @@
 package App::LolBot::Bot;
 
+use strict;
+use warnings;
 use Any::Moose;
 use App::LolBot::Server;
 use App::LolBot::Stats;

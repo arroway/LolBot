@@ -1,5 +1,7 @@
 package App::LolBot::User;
 
+use strict;
+use warnings;
 use Any::Moose;
 
 has name => (
