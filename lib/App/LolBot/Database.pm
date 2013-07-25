@@ -41,18 +41,6 @@ has db => (
   }
 );
 
-sub do {
-  my $self = shift;
-  my ($query) = @_;
-  $self->db->do($query);
-  
-}
-
-sub commit {
-  my $self = shift;
-  $self->db->commit();
-}
-
 sub select_user {
   my $self = shift;
   my $name = shift;
@@ -202,12 +190,5 @@ sub update_bot {
  
   $sth->finish();
 } 
-
-
-sub disconnect {
-
-  my $self = shift;
-  $self->db->disconnect();
-}
 
 1;
