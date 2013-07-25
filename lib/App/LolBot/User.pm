@@ -168,7 +168,7 @@ sub find_amazed {
   my $self = shift;
   my $msg = shift;
 
-  if ($msg =~ m/:(o|O)/) {
+  while ($msg =~ m/:(o|O)/g) {
     $self->amazed ($self->amazed + 1);
   }
 }
