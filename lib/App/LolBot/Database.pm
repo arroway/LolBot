@@ -14,7 +14,7 @@ has db => (
   is => 'rw',
   default => sub {
     my $self = shift;
-    my @args = ("dbi:SQLite::data.db", {RaiseError => 1, AutoCommit => 0});
+    my @args = ("dbi:SQLite:data.db", {RaiseError => 1, AutoCommit => 0});
     my $db = DBI->connect(@args);
     $db->do("CREATE TABLE nicknames (name     VARCHAR(50) PRIMARY KEY,
                                    capslock       INTEGER,
