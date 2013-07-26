@@ -121,7 +121,7 @@ sub list_nick(){
       if ($key =~ m/([a-zA-Z0-9%~\[\]\(\).<>&@_-\:+]+)/){
         $new_nick = $1;
         $key = $';
-        $self->add_nick($new_nick);
+        $self->add_nick($new_nick) unless ($new_nick =~ /(\+?Vervamon|\:?LolBot)/);
       }
     }
   }
