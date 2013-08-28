@@ -194,7 +194,7 @@ sub update_bot {
   my $self = shift;
   my $lines = shift;
   
-  my $query = qq{ UPDATE lolbot SET lines = ? };
+  my $query = qq{ UPDATE lolbot SET lines = ? where id=1 };
   my $sth = $self->db->prepare($query);
 
   eval {
