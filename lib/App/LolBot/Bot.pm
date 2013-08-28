@@ -129,6 +129,16 @@ sub run {
           $user_nick = $1;
         }
 
+        if ($msg =~ m/bonjour|salut|hello|yo|hi/i) {
+          my $salut = (':Tu vas loler ?');
+          $self->send($salut, 'PRIVMSG');
+        }
+        
+        if ($msg =~ m/q\+|je go|a\+|à plus|au revoir|bonne soirée/i) {
+          my $aurevoir = (':Que la force soit avec toi !');
+          $self->send($aurevoir, 'PRIVMSG');
+        }
+        
         if ($msg =~ m/^:c'est qui LolBot/) {
           my $welcome = (':Bonjour, je suis un LolBot. Contrairement à ce que mon nom peut laisser penser, je ne lol pas (pas comme Fallen). !help !rtfm');
           $self->send($welcome, 'PRIVMSG');
