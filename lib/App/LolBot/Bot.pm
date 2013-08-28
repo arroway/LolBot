@@ -142,6 +142,11 @@ sub run {
           $leet = 0;
         }
         
+        if ($msg =~ m/:re$/i) {
+          my $re = (':C\'est pas trop tôt ' . $user_nick . '!');
+          $self->send($re, 'PRIVMSG');
+        }
+        
         if ($msg =~ m/q\+|je go|a\+|à plus|au revoir|bonne soirée/i) {
           my $aurevoir = (':Que la force soit avec toi !');
           $self->send($aurevoir, 'PRIVMSG');
