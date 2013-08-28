@@ -75,6 +75,7 @@ sub collect_statistics {
 
 sub run {
   my $self = shift;
+  my $leet = 0;
   
   print "*** LolBot initialization... ***\n";
   
@@ -111,6 +112,7 @@ sub run {
 
       if (strftime("%H:%M:%S", localtime()) eq "13:37:00"){
         $self->send(':LEEEEEET', 'PRIVMSG');
+        $leet = 1;
         select(undef, undef, undef, 1);
       }
 
@@ -132,6 +134,12 @@ sub run {
         if ($msg =~ m/bonjour|salut|hello|yo|hi/i) {
           my $salut = (':Tu vas loler ?');
           $self->send($salut, 'PRIVMSG');
+        }
+        
+        if ($msg =~ m/:amen$/i and $leet) {
+          my $amen = (':' . $user_nick . ' est un être humain exceptionnel.');
+          $self->send($amen, 'PRIVMSG');
+          $leet = 0;
         }
         
         if ($msg =~ m/q\+|je go|a\+|à plus|au revoir|bonne soirée/i) {
