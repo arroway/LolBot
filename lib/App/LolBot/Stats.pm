@@ -201,6 +201,7 @@ sub rec_stats{
       $nick_list[$i]->find_fpga($msg);
       $nick_list[$i]->find_win($msg);
       $nick_list[$i]->find_demoralized($msg);
+      $nick_list[$i]->find_rage($msg);
   
       $self->load_data($nick_list[$i]);
       return;

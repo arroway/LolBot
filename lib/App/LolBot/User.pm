@@ -209,6 +209,14 @@ sub find_demoralized {
   }
 }
 
+sub find_rage {
+  my $self = shift;
+  my $msg = shift;
+
+  while ($msg =~ m/merde|shit/g) {
+    $self->rage( $self->rage + 1 );
+  }
+}
 
 sub add_rage {
   my $self = shift;
