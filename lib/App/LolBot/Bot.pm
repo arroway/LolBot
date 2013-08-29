@@ -186,7 +186,7 @@ sub run {
         my $facepalm = $self->stats->print_facepalm($1) if $msg =~m/^:!facepalm$/;
         $self->send($facepalm, 'PRIVMSG') if ($facepalm);
         
-        $self->send(":biaaatch", 'PRIVMSG') if ($msg =~m/:p/);
+        $self->send(":biaaatch", 'PRIVMSG') if ($msg =~m/^:(.*):p(.*)$/);
 
         $self->stats->rec_stats($user_nick,$msg);
       }
