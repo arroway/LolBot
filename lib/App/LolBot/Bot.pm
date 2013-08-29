@@ -131,18 +131,18 @@ sub run {
           $user_nick = $1;
         }
 
-        if ($msg =~ m/bonjour|salut|hello|yo|hi/i) {
+        if ($msg =~ m/^:(bonjour|salut|hello|yo|hi)$/i) {
           my $salut = (':Tu vas loler ?');
           $self->send($salut, 'PRIVMSG');
         }
         
-        if ($msg =~ m/:amen$/i and $leet) {
+        if ($msg =~ m/^:amen$/i and $leet) {
           my $amen = (':' . $user_nick . ' est un être humain exceptionnel.');
           $self->send($amen, 'PRIVMSG');
           $leet = 0;
         }
         
-        if ($msg =~ m/:re$/i) {
+        if ($msg =~ m/^:re$/i) {
           my $re = (':C\'est pas trop tôt ' . $user_nick . '!');
           $self->send($re, 'PRIVMSG');
         }
