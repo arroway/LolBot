@@ -136,7 +136,7 @@ sub run {
           $self->send($salut, 'PRIVMSG');
         }
         
-        if ($msg =~ m/^:amen$/i and $leet) {
+        if ($msg =~ m/^:amen/i and $leet) {
           my $amen = (':' . $user_nick . ' est un être humain exceptionnel.');
           $self->send($amen, 'PRIVMSG');
           $leet = 0;
