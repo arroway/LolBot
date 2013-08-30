@@ -76,6 +76,7 @@ sub collect_statistics {
 sub run {
   my $self = shift;
   my $leet = 0;
+  my $random = 0;
   
   print "*** LolBot initialization... ***\n";
   
@@ -121,6 +122,14 @@ sub run {
         $self->lines( $self->stats->log_lines );
       }
 
+      # Some features are triggered only if it is on an even line
+      # This is to introduce some unpredictability
+      if ($self->stats->log_lines % 2 == 0) {
+        $random = 1;
+      } else {
+        $random = 0;
+      }
+
       if ($cmd eq "PRIVMSG"){
      
         $self->stats->log();
@@ -131,7 +140,7 @@ sub run {
           $user_nick = $1;
         }
 
-        if ($msg =~ m/^:(bonjour|salut|hello|yo|hi)$/i) {
+        if ($msg =~ m/^:(bonjour|salut|hello|yo|hi)/i and $random) {
           my $salut = (':Tu vas loler ?');
           $self->send($salut, 'PRIVMSG');
         }
@@ -142,12 +151,12 @@ sub run {
           $leet = 0;
         }
         
-        if ($msg =~ m/^:re$/i) {
+        if ($msg =~ m/^:re$/i and $random) {
           my $re = (':C\'est pas trop tôt ' . $user_nick . '!');
           $self->send($re, 'PRIVMSG');
         }
         
-        if ($msg =~ m/q\+|je go|a\+|à plus|au revoir|bonne soirée/i) {
+        if ($msg =~ m/q\+|je go|a\+|à plus|au revoir|bonne soirée/i and $random) {
           my $aurevoir = (':Que la force soit avec toi !');
           $self->send($aurevoir, 'PRIVMSG');
         }
@@ -186,7 +195,7 @@ sub run {
         my $facepalm = $self->stats->print_facepalm($1) if $msg =~m/^:!facepalm$/;
         $self->send($facepalm, 'PRIVMSG') if ($facepalm);
         
-        $self->send(":biaaatch", 'PRIVMSG') if ($msg =~m/^:(.*):p(.*)$/);
+        $self->send(":biaaatch", 'PRIVMSG') if ($msg =~m/^:(.*):p(.*)$/ and $random);
 
         $self->stats->rec_stats($user_nick,$msg);
       }
