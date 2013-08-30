@@ -144,6 +144,11 @@ sub run {
           my $salut = (':Tu vas loler ?');
           $self->send($salut, 'PRIVMSG');
         }
+
+        if ($msg =~ m/^:plop/i and $random) {
+          my $text = (':Il pleut il mouille, c\'st la fête à la grenouille.');
+          $self->send($text, 'PRIVMSG');
+        }
         
         if ($msg =~ m/^:amen/i and $leet) {
           my $amen = (':' . $user_nick . ' est un être humain exceptionnel.');
