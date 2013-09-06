@@ -168,7 +168,7 @@ sub run {
         }
         
         if ($msg =~ m/^:re$/i and $random) {
-          my $re = (':C\'est pas trop tôt ' . $user_nick . '!');
+          my $re = (':cool.');
           $self->send($re, 'PRIVMSG');
         }
         
