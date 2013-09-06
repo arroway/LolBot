@@ -117,6 +117,17 @@ sub run {
         select(undef, undef, undef, 1);
       }
 
+      if (strftime("%H:%M:%S", localtime()) eq "11:11:11"){
+	if ($self->stats->log_lines >  1000){
+          $self->send(":Je vis ce phénomène depuis de très nombreuses années, ces coincidences 11H11, des instants de grâce où j'ai l'impression d'être en communion. Cela me semble aussi réconfortant qu'étrange & j'aimerais pouvoir en parler. J'aimerais comprendre", 'PRIVMSG');
+	} 
+	if ($self->stats->log_lines > 2000){
+          $self->send(":http://www.hellocoton.fr/to/vfmP#http://magiedelenvotement.blogspot.com/2013/03/le-phenomene-des-heures-miroirs-11h11.html", 'PRIVMSG');
+	  $self->send(":et tout vous sera révélé", 'PRIVMSG'); 
+        }
+        select(undef, undef, undef, 1);
+      }
+
       if ($self->stats->log_lines % 666 == 0 and $self->stats->log_lines != $self->lines) {
         $self->send(':You\'re so evil!', 'PRIVMSG');
         $self->lines( $self->stats->log_lines );
