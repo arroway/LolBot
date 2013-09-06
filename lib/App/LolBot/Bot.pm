@@ -157,7 +157,7 @@ sub run {
         }
 
         if ($msg =~ m/^:plop/i and $random) {
-          my $text = (':Il pleut il mouille, c\'st la fête à la grenouille.');
+          my $text = (':plip plop');
           $self->send($text, 'PRIVMSG');
         }
         
