@@ -135,7 +135,7 @@ sub run {
 
       # Some features are triggered only if it is on an even line
       # This is to introduce some unpredictability
-      if ($self->stats->log_lines % 2 == 0) {
+      if ($self->stats->log_lines % 3 == 0) {
         $random = 1;
       } else {
         $random = 0;
