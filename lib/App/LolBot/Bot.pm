@@ -212,6 +212,8 @@ sub run {
         $self->send($facepalm, 'PRIVMSG') if ($facepalm);
         
         $self->send(":biaaatch", 'PRIVMSG') if ($msg =~m/^:(.*):p(.*)$/ and $random);
+        $self->send(":c'est n'imp", 'PRIVMSG') if ($msg =~m/^:(.*):o(.*)$/ and $random);
+        $self->send(":tu veux aller faire du java ?", 'PRIVMSG') if ($msg =~m/^:(.*)café(.*)$/ and $random);
 
         $self->stats->rec_stats($user_nick,$msg);
       }
