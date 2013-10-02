@@ -213,7 +213,7 @@ sub find_rage {
   my $self = shift;
   my $msg = shift;
 
-  while ($msg =~ m/merde|shit|zut|chiant|saoulant/g) {
+  while ($msg =~ m/merde|shit|zut|chiant|saoulant|putain|ptin|relou|chier/g) {
     $self->rage( $self->rage + 1 );
   }
 }
