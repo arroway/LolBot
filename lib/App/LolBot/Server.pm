@@ -83,8 +83,8 @@ sub send {
   my ($cmd,@args) = @_;
 
   my $socket = $self->socket;
-
-  $cmd = join(" ",$cmd,@args,"\r\n");
+  $cmd = join(" ",$cmd,@args);
+  $cmd = join("",$cmd,"\r\n");
   print $socket $cmd;
   print $cmd;
 }

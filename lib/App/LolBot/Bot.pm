@@ -77,7 +77,6 @@ sub run {
   my $self = shift;
   my $leet = 0;
   my $random = 0;
-  
   print "*** LolBot initialization... ***\n";
   
   $self->connect();
@@ -89,23 +88,23 @@ sub run {
 
     while(my ($prefix, $cmd, @args) = $self->server->recv()){
 
+      #Answer to the ping of the server to stay connected
+      $self->server->send("PONG", ($args[@args-1])) if ($cmd eq "PING");
+
       #Identify the bot on the server
-      if ($cmd eq "NOTICE" && $args[0] eq "AUTH"){
+      if ($cmd eq "NOTICE" && $args[0] =~ m/(Auth)/i){
 
         print "Identifying itself  on the server...\n";
         
         $self->server->send("NICK", $self->nickname);
-	      $self->server->send("USER", ($self->nickname, $self->nickname, $self->host, ":" . $self->nickname));
+        $self->server->send("USER", ($self->nickname, $self->nickname, $self->host, ":" . $self->nickname));
       }
 
       if ($cmd eq "376"){
         print "Joining channel " . $self->chan . "...\n";
         $self->server->send("JOIN", ($self->chan));
       }
-
-      #Answer to the ping of the server to stay connected
-      $self->server->send("PONG", ($args[@args-1])) if ($cmd eq "PING");
-
+      
       #Deal with new nicknames 
       $self->stats->init_nick_list(@args) if ($cmd eq "353");
       $self->stats->new_join($prefix) if ($cmd eq "JOIN");
